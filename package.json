@@ -8,8 +8,5 @@
   "packageManager": "yarn@4.4.0",
   "workspaces": [
     "packages/*"
-  ],
-  "devDependencies": {
-    "typescript": "^5.5.4"
-  }
+  ]
 }

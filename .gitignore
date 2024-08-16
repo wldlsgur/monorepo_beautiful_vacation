@@ -4,3 +4,5 @@
 !.yarn/sdks
 .pnp.*
 .vscode
+node_modules
+dist
