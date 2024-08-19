@@ -3,6 +3,5 @@
 !.yarn/releases
 !.yarn/sdks
 .pnp.*
-.vscode
 node_modules
 dist
