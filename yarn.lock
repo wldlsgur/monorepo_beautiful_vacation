@@ -1726,7 +1726,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint@npm:^9.8.0":
+"eslint@npm:^9.8.0, eslint@npm:^9.9.0":
   version: 9.9.0
   resolution: "eslint@npm:9.9.0"
   dependencies:
@@ -2724,6 +2724,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "monorepo_beautiful_vacation@workspace:."
   dependencies:
+    eslint: "npm:^9.9.0"
     prettier: "npm:^3.3.3"
     typescript: "npm:^5.5.4"
   languageName: unknown
