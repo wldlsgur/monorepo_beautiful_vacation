@@ -5,12 +5,8 @@
   },
   "typescript.tsdk": ".yarn/sdks/typescript/lib",
   "typescript.enablePromptUseWorkspaceTsdk": true,
-  "cSpell.words": [
-    "Parens",
-    "trivago",
-    "tseslint",
-    "wldlsgur"
-  ],
-  "eslint.nodePath": ".yarn/sdks",
-  "prettier.prettierPath": ".yarn/sdks/prettier/index.cjs"
+  "cSpell.words": ["Parens", "trivago", "tseslint", "wldlsgur"],
+  "prettier.prettierPath": ".yarn/sdks/prettier/index.cjs",
+  "eslint.workingDirectories": [{ "pattern": "./packages/*/" }],
+  "eslint.validate": ["javascript", "typescript", "javascriptreact", "html", "typescriptreact"]
 }
