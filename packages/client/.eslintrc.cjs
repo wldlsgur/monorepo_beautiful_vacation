@@ -22,7 +22,10 @@ module.exports = {
       },
     ],
     'import/no-duplicates': 'off',
-    'jsx-a11y/label-has-associated-control': ['error', { controlComponents: ['input', 'select'] }],
+    'jsx-a11y/label-has-associated-control': [
+      'error',
+      { controlComponents: ['input', 'select'] },
+    ],
     'import/no-extraneous-dependencies': 'off',
     'no-restricted-syntax': [
       'error',
