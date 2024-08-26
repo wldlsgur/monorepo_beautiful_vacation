@@ -3,7 +3,6 @@ module.exports = {
   plugins: ['prettier', 'react-hooks'],
   parser: '@typescript-eslint/parser',
   rules: {
-    'prettier/prettier': 'error',
     'react-hooks/rules-of-hooks': 'error',
     'react-hooks/exhaustive-deps': 'warn',
     'react/react-in-jsx-scope': 'off',
