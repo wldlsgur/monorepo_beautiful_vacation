@@ -5,12 +5,7 @@
   },
   "typescript.tsdk": ".yarn/sdks/typescript/lib",
   "typescript.enablePromptUseWorkspaceTsdk": true,
-  "cSpell.words": [
-    "Parens",
-    "trivago",
-    "tseslint",
-    "wldlsgur"
-  ],
+  "cSpell.words": ["Parens", "trivago", "tseslint", "wldlsgur"],
   "prettier.prettierPath": ".yarn/sdks/prettier/index.cjs",
   "eslint.workingDirectories": [
     {
@@ -21,7 +16,6 @@
     "javascript",
     "typescript",
     "javascriptreact",
-    "html",
     "typescriptreact"
   ],
   "eslint.nodePath": ".yarn/sdks"
