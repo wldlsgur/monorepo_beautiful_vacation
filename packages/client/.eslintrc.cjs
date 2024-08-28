@@ -1,55 +1,47 @@
+const path = require('path');
+
 module.exports = {
-  extends: ['airbnb', 'prettier'],
-  plugins: ['prettier', 'react-hooks'],
+  root: true,
+  env: { browser: true, es2020: true },
+  extends: [
+    'airbnb',
+    'airbnb-typescript',
+    'airbnb/hooks',
+    'plugin:react/recommended',
+    'plugin:jsx-a11y/recommended',
+    'plugin:import/errors',
+    'plugin:import/warnings',
+    'plugin:@typescript-eslint/recommended',
+    'plugin:prettier/recommended',
+  ],
+  ignorePatterns: ['dist', '.eslintrc.cjs'],
   parser: '@typescript-eslint/parser',
+  plugins: ['react-refresh', '@typescript-eslint', 'react-hooks', 'prettier'],
   rules: {
-    'react-hooks/rules-of-hooks': 'error',
-    'react-hooks/exhaustive-deps': 'warn',
-    'react/react-in-jsx-scope': 'off',
-    'react/jsx-props-no-spreading': 'off',
-    'react/jsx-filename-extension': ['error', { extensions: ['.tsx', '.jsx'] }],
-    'react/function-component-definition': 'off',
-    'import/extensions': [
-      'error',
-      'ignorePackages',
-      {
-        js: 'never',
-        mjs: 'never',
-        jsx: 'never',
-        ts: 'never',
-        tsx: 'never',
-      },
-    ],
-    'import/no-duplicates': 'off',
-    'jsx-a11y/label-has-associated-control': [
-      'error',
-      { controlComponents: ['input', 'select'] },
-    ],
     'import/no-extraneous-dependencies': 'off',
-    'no-restricted-syntax': [
-      'error',
-      {
-        selector: 'UnaryExpression[operator="!"]',
-        message: 'Unexpected token !',
-      },
+    'react-refresh/only-export-components': [
+      'warn',
+      { allowConstantExport: true },
     ],
+    'react/react-in-jsx-scope': 'off',
+    'react/function-component-definition': [
+      2,
+      { namedComponents: 'arrow-function' },
+    ],
+    'react/jsx-props-no-spreading': ['warn'],
+    'import/no-cycle': 'off',
+    'no-underscore-dangle': 'off',
+  },
+  parserOptions: {
+    ecmaVersion: 'latest',
+    sourceType: 'module',
+    project: path.resolve(__dirname, 'tsconfig.app.json'),
   },
   settings: {
-    'import/extensions': ['.js', '.jsx', '.ts', '.tsx'],
-    'import/parsers': {
-      '@typescript-eslint/parser': ['.ts', '.tsx', '.d.ts', '.js', '.jsx'],
-    },
     'import/resolver': {
-      node: {
-        extensions: ['.js', '.jsx', '.ts', '.tsx'],
-      },
       typescript: {
-        alwaysTryTypes: true,
-        project: './tsconfig.app.json',
+        project: path.resolve(__dirname, 'tsconfig.app.json'),
       },
     },
-  },
-  env: {
-    browser: true,
   },
 };
