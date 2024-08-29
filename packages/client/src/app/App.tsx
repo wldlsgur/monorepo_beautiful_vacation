@@ -1,7 +1,12 @@
-import { Router } from '@/app';
+import { GlobalStyle, Router, ThemeProvider } from '@/app';
 
 const App = () => {
-  return <Router />;
+  return (
+    <ThemeProvider>
+      <GlobalStyle />
+      <Router />
+    </ThemeProvider>
+  );
 };
 
 export default App;
