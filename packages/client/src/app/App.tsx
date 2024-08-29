@@ -1,5 +1,7 @@
+import { Router } from '@/app';
+
 const App = () => {
-  return <h1>ㅗㅑ</h1>;
+  return <Router />;
 };
 
 export default App;

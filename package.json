@@ -49,5 +49,8 @@
       "prettier --write",
       "npx eslint@8.57.0 --fix --max-warnings=0"
     ]
+  },
+  "dependencies": {
+    "styled-reset": "^4.5.2"
   }
 }
