@@ -32,6 +32,43 @@ module.exports = {
     'react/jsx-props-no-spreading': ['warn'],
     'import/no-cycle': 'off',
     'no-underscore-dangle': 'off',
+    'import/order': [
+      'warn',
+      {
+        groups: [
+          'builtin', // Node.js 내장 모듈
+          'external', // 외부 라이브러리
+          'internal', // 내부 모듈 (alias 사용 시)
+          'parent', // 부모 경로 import
+          'sibling', // 같은 경로 import
+          'index', // index.js import
+          'object', // imports within objects
+          'type', // 타입 import
+        ],
+        pathGroups: [
+          {
+            pattern: 'react',
+            group: 'external',
+            position: 'before', // react 라이브러리들 먼저
+          },
+          {
+            pattern: '@/**',
+            group: 'internal',
+          },
+          {
+            pattern: '*.css',
+            group: 'object',
+            position: 'after', // CSS/SCSS는 마지막에
+          },
+        ],
+        pathGroupsExcludedImportTypes: ['react'],
+        'newlines-between': 'never', // 그룹 간에 빈 줄 추가
+        alphabetize: {
+          order: 'asc', // 알파벳 순으로 정렬
+          caseInsensitive: true, // 대소문자 구분 없이
+        },
+      },
+    ],
   },
   parserOptions: {
     ecmaVersion: 'latest',
