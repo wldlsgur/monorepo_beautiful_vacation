@@ -6,8 +6,13 @@ const Router = () => {
     <Routes>
       <Route
         path='/'
-        element={<Pages.Home />}
-      />
+        element={<Pages.Layout />}
+      >
+        <Route
+          index
+          element={<Pages.Home />}
+        />
+      </Route>
     </Routes>
   );
 };
