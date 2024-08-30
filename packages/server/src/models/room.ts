@@ -1,4 +1,4 @@
-import { DB } from '@/config';
+import { Connection } from '@/config';
 
 interface GetRoomListRequest {
   limit: number;
@@ -13,7 +13,7 @@ const getRoomList = async ({ limit, offset }: GetRoomListRequest) => {
   `;
 
   try {
-    const connection = await DB();
+    const connection = await Connection();
     const [rows] = await connection.query(query, [limit, offset]);
 
     return rows;

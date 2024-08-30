@@ -1,8 +1,8 @@
-import initDB from '@/config/db';
+import { Connection } from '@/config';
 
 const getUsers = async () => {
   try {
-    const connection = await initDB();
+    const connection = await Connection();
     const [rows] = await connection.query('SELECT * FROM users');
 
     return rows;

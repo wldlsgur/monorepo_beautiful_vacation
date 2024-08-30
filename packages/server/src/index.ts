@@ -1,8 +1,5 @@
 import express, { Express, Request, Response } from 'express';
-import dotenv from 'dotenv';
 import * as Router from '@/routes';
-
-dotenv.config();
 
 const app: Express = express();
 const port = 5000;

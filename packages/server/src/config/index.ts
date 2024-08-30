@@ -1,1 +1,2 @@
-export { default as DB } from './db';
+export { default as CONFIG } from './config';
+export { default as Connection } from './database';
