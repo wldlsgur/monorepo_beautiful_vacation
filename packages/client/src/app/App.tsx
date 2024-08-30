@@ -1,10 +1,17 @@
-import { GlobalStyle, Router, ThemeProvider } from '@/app';
+import {
+  GlobalStyle,
+  Router,
+  ThemeProvider,
+  TanstackQueryProvider,
+} from '@/app';
 
 const App = () => {
   return (
     <ThemeProvider>
-      <GlobalStyle />
-      <Router />
+      <TanstackQueryProvider>
+        <GlobalStyle />
+        <Router />
+      </TanstackQueryProvider>
     </ThemeProvider>
   );
 };
