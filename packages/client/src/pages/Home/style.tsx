@@ -6,9 +6,9 @@ export const Wrapper = styled.main`
 `;
 
 export const RoomContainer = styled.section`
-  flex: 1 0 60%;
+  flex: 1 0 70%;
 `;
 
 export const Sidebar = styled.aside`
-  flex: 1 0 40%;
+  flex: 1 0 30%;
 `;

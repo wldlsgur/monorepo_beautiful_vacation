@@ -9,7 +9,7 @@ export const Container = styled.header`
 `;
 
 export const Title = styled.h1`
-  font-size: 5rem;
+  font-size: 4rem;
   font-weight: 700;
   color: ${({ theme }) => theme.colors.primaryNormal};
 `;
