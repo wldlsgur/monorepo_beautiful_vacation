@@ -1,9 +1,9 @@
 import { Request, Response } from 'express';
-import userModel from '@/models/users';
+import { UsersModel } from '@/models';
 
 const getUsers = async (req: Request, res: Response) => {
   try {
-    const users = await userModel.getUsers();
+    const users = await UsersModel.getUsers();
 
     res.json(users);
   } catch (error) {

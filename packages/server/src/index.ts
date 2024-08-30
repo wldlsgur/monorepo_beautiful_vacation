@@ -1,13 +1,18 @@
-import express, { Express } from 'express';
+import express, { Express, Request, Response } from 'express';
 import dotenv from 'dotenv';
-import usersRoutes from '@/routes/users';
+import * as Router from '@/routes';
 
 dotenv.config();
 
 const app: Express = express();
 const port = 5000;
 
-app.use('/', usersRoutes);
+app.use('/api/v1/users', Router.UserRouter);
+app.use('/api/v1/rooms', Router.RoomRouter);
+
+app.use((_: Request, res: Response) => {
+  res.status(404).json({ message: 'Not Found' });
+});
 
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
