@@ -1,9 +1,5 @@
+import { GetRoomListRequest } from 'common-types';
 import { Connection } from '@/config';
-
-interface GetRoomListRequest {
-  limit: number;
-  offset: number;
-}
 
 const getRoomList = async ({ limit, offset }: GetRoomListRequest) => {
   const query = `
