@@ -7,6 +7,8 @@ export const Wrapper = styled.main`
 
 export const RoomContainer = styled.section`
   flex: 1 0 70%;
+  display: flex;
+  flex-direction: column;
 `;
 
 export const Sidebar = styled.aside`
