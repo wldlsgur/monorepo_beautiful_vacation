@@ -1,7 +1,7 @@
-import { GetRoomListRequest } from 'common-types';
+import { RoomListRequest } from 'common-types';
 import { Connection } from '@/config';
 
-const getRoomList = async ({ limit, offset }: GetRoomListRequest) => {
+const getRoomList = async ({ limit, offset }: RoomListRequest) => {
   const query = `
     SELECT * FROM chat_rooms
     ORDER BY created_at DESC

@@ -6,9 +6,9 @@ const getRoomList = async (req: Request, res: Response) => {
   const offset = parseInt(req.query.offset as string, 10) || 0;
 
   try {
-    const users = await RoomModel.getRoomList({ limit, offset });
+    const roomList = await RoomModel.getRoomList({ limit, offset });
 
-    res.json(users);
+    res.json({ data: roomList, message: 'success' });
   } catch (error) {
     res.status(500).json(`Internal Server Error: ${error}`);
   }
