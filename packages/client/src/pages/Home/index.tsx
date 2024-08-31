@@ -1,4 +1,4 @@
-import { Header, SearchBar } from '@/widgets/Room/Ui';
+import { Header, RoomList, SearchBar } from '@/widgets/Room/Ui';
 import * as S from './style';
 
 const Home = () => {
@@ -7,6 +7,7 @@ const Home = () => {
       <S.RoomContainer>
         <Header />
         <SearchBar />
+        <RoomList />
       </S.RoomContainer>
       <S.Sidebar />
     </S.Wrapper>
