@@ -1,4 +1,4 @@
-export interface GetRoomListRequest {
+export interface RoomListRequest {
   limit: number;
   offset: number;
 }
