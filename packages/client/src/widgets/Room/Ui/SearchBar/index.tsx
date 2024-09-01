@@ -1,8 +1,13 @@
+import { ChangeEvent } from 'react';
 import { Icon, Input } from 'jiponent';
 import { useTheme } from 'styled-components';
 import * as S from './style';
 
-const SearchBar = () => {
+interface Props {
+  onChange: (event: ChangeEvent<HTMLInputElement>) => void;
+}
+
+const SearchBar = ({ onChange }: Props) => {
   const theme = useTheme();
 
   return (
@@ -16,7 +21,12 @@ const SearchBar = () => {
           size='25px'
         />
       </Input.Label>
-      <Input.Text style={{ padding: '1rem' }} />
+      <Input.Text
+        type='text'
+        name='keyword'
+        onChange={onChange}
+        style={{ padding: '1rem', fontSize: '1.5rem', fontWeight: 600 }}
+      />
     </S.SearchContainer>
   );
 };

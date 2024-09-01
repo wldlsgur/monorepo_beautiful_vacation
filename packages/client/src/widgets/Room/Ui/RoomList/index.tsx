@@ -1,18 +1,20 @@
 import { useEffect } from 'react';
-import { useInfiniteQuery } from '@tanstack/react-query';
-import { RoomListResponse, Room } from 'common-types';
+import { InfiniteData } from '@tanstack/react-query';
+import { Room, RoomListResponse } from 'common-types';
 import { useInView } from 'react-intersection-observer';
-import { QUERY_OPTION } from '@/shared/Constant';
+import Lottie from 'react-lottie-player';
+import { EmptyLottie } from '@/shared/lottie';
 import RoomItem from '../RoomItem';
 import * as S from './style';
 
-const [offset, limit] = [0, 20];
+interface Props {
+  data: InfiniteData<RoomListResponse> | undefined;
+  hasNextPage: boolean;
+  isFetching: boolean;
+  fetchNextPage: () => void;
+}
 
-const RoomList = () => {
-  const { data, fetchNextPage, hasNextPage, isFetching } =
-    useInfiniteQuery<RoomListResponse>(
-      QUERY_OPTION.ROOM_LIST({ offset, limit }),
-    );
+const RoomList = ({ data, hasNextPage, isFetching, fetchNextPage }: Props) => {
   const [ref, inView] = useInView({ threshold: 0.5 });
 
   useEffect(() => {
@@ -20,6 +22,20 @@ const RoomList = () => {
       fetchNextPage();
     }
   }, [fetchNextPage, hasNextPage, inView, isFetching]);
+
+  if (!data || data.pages[0].data.length === 0) {
+    return (
+      <S.EmptyContainer>
+        <Lottie
+          animationData={EmptyLottie}
+          play
+          loop
+          speed={0.5}
+          style={{ width: 200, height: 200 }}
+        />
+      </S.EmptyContainer>
+    );
+  }
 
   return (
     <S.RoomList>

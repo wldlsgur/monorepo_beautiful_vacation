@@ -8,9 +8,15 @@ interface Props {
 
 const RoomItem = forwardRef(
   ({ roomData }: Props, ref: ForwardedRef<HTMLLIElement>) => {
+    const { room_name, current_participants, max_participants } = roomData;
+
     return (
       <S.RoomItem ref={ref}>
-        <h2>{roomData.room_name}</h2>
+        <S.RoomTitle>{room_name}</S.RoomTitle>
+
+        <S.Participants>
+          {`${current_participants} / ${max_participants}`}
+        </S.Participants>
       </S.RoomItem>
     );
   },
