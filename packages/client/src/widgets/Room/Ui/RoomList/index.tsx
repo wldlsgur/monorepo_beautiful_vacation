@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import { InfiniteData } from '@tanstack/react-query';
 import { Room, RoomListResponse } from 'common-types';
+import { Skeleton } from 'jiponent';
 import { useInView } from 'react-intersection-observer';
 import Lottie from 'react-lottie-player';
 import { EmptyLottie } from '@/shared/lottie';
@@ -54,6 +55,21 @@ const RoomList = ({ data, hasNextPage, isFetching, fetchNextPage }: Props) => {
           );
         }),
       )}
+      {isFetching &&
+        Array.from({ length: 9 }, (_, index) => (
+          <S.LoadingItem key={index}>
+            <Skeleton.Paragraph
+              line={1}
+              height='1.5rem'
+              style={{ flexBasis: '80%' }}
+            />
+            <Skeleton.Paragraph
+              line={1}
+              height='1.5rem'
+              style={{ flexBasis: '10%' }}
+            />
+          </S.LoadingItem>
+        ))}
     </S.RoomList>
   );
 };

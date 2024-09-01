@@ -6,7 +6,7 @@ export const RoomList = styled.ul`
   flex-direction: column;
   flex-wrap: nowrap;
   margin: 3rem 3rem;
-  overflow-y: scroll;
+  overflow-y: auto;
 
   &::-webkit-scrollbar {
     width: 1rem;
@@ -36,4 +36,17 @@ export const EmptyContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+`;
+
+export const LoadingContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+`;
+
+export const LoadingItem = styled.div`
+  display: flex;
+  justify-content: space-between;
+  padding: 3rem 4rem;
+  margin: 0 1rem 0 0;
 `;
