@@ -18,6 +18,7 @@ module.exports = {
   parser: '@typescript-eslint/parser',
   plugins: ['react-refresh', '@typescript-eslint', 'react-hooks', 'prettier'],
   rules: {
+    '@typescript-eslint/naming-convention': 'off',
     'react/display-name': 'off',
     'consistent-return': 'off',
     '@typescript-eslint/no-explicit-any': 'off',
