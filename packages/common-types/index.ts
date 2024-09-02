@@ -1,3 +1,5 @@
 export * from './Room/Request';
 export * from './Room/Response';
-export * from './Room/Dto';
+export * from './Room/model';
+export * from './auth/request';
+export * from './user/model';

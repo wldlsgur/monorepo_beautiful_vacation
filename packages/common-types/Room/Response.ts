@@ -1,4 +1,4 @@
-import { Room } from './Dto';
+import { Room } from './model';
 
 export interface RoomListResponse {
   data: Room[];
