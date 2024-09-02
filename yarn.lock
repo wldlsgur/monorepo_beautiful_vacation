@@ -1674,6 +1674,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"axios@npm:1.7.7":
+  version: 1.7.7
+  resolution: "axios@npm:1.7.7"
+  dependencies:
+    follow-redirects: "npm:^1.15.6"
+    form-data: "npm:^4.0.0"
+    proxy-from-env: "npm:^1.1.0"
+  checksum: 10c0/4499efc89e86b0b49ffddc018798de05fab26e3bf57913818266be73279a6418c3ce8f9e934c7d2d707ab8c095e837fc6c90608fb7715b94d357720b5f568af7
+  languageName: node
+  linkType: hard
+
 "axobject-query@npm:~3.1.1":
   version: 3.1.1
   resolution: "axobject-query@npm:3.1.1"
@@ -1952,7 +1963,7 @@ __metadata:
     eslint-plugin-react-hooks: "npm:4.3.0"
     eslint-plugin-react-refresh: "npm:0.4.9"
     framer-motion: "npm:11.3.30"
-    jiponent: "npm:^1.10.1"
+    jiponent: "npm:1.10.1"
     lodash: "npm:4.17.21"
     prettier: "npm:3.3.3"
     react: "npm:18.3.1"
@@ -4096,7 +4107,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"jiponent@npm:^1.10.1":
+"jiponent@npm:1.10.1":
   version: 1.10.1
   resolution: "jiponent@npm:1.10.1"
   dependencies:
@@ -5655,6 +5666,7 @@ __metadata:
     "@types/node": "npm:22.5.0"
     "@typescript-eslint/eslint-plugin": "npm:6.14.0"
     "@typescript-eslint/parser": "npm:6.14.0"
+    axios: "npm:1.7.7"
     common-types: "workspace:packages/common-types"
     cors: "npm:2.8.5"
     dotenv: "npm:16.4.5"
