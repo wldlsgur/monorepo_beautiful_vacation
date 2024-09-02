@@ -4,7 +4,7 @@ import { Room, RoomListResponse } from 'common-types';
 import { Skeleton } from 'jiponent';
 import { useInView } from 'react-intersection-observer';
 import Lottie from 'react-lottie-player';
-import { EmptyLottie } from '@/shared/lottie';
+import { EMPTY_LOTTIE } from '@/shared/lottie';
 import RoomItem from '../RoomItem';
 import * as S from './style';
 
@@ -28,7 +28,7 @@ const RoomList = ({ data, hasNextPage, isFetching, fetchNextPage }: Props) => {
     return (
       <S.EmptyContainer>
         <Lottie
-          animationData={EmptyLottie}
+          animationData={EMPTY_LOTTIE}
           play
           loop
           speed={0.5}
