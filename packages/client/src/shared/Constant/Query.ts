@@ -1,4 +1,9 @@
-import { RoomListRequest, SearchRoomRequest } from 'common-types';
+import {
+  KakaoLoginRequest,
+  RoomListRequest,
+  SearchRoomRequest,
+} from 'common-types';
+import { postKakaoLogin } from '@/entities/auth';
 import { getRoomList, getSearchRoom } from '@/entities/Room';
 import validateSearchKeyword from '@/widgets/Room/Util/ValidateSearchKeyword';
 
@@ -36,5 +41,11 @@ export const QUERY_OPTION = {
     enabled: !!keyword && validateSearchKeyword({ keyword }),
     gcTime: 5 * 60 * 1000,
     staleTime: 5 * 60 * 1000,
+  }),
+};
+
+export const MUTATE_OPTION = {
+  KAKAO_LOGIN: ({ code }: KakaoLoginRequest) => ({
+    mutationFn: () => postKakaoLogin({ code }),
   }),
 };
