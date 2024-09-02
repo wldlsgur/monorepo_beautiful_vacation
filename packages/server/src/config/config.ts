@@ -11,6 +11,8 @@ const CONFIG = {
     database: process.env.DB_NAME,
     multipleStatements: true,
   },
+  KAKAO_REST_API_KEY: process.env.KAKAO_REST_API_KEY,
+  KAKAO_REDIRECT_URL: process.env.KAKAO_REDIRECT_URL,
 };
 
 export default CONFIG;
