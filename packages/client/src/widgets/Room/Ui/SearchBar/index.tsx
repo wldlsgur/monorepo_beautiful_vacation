@@ -1,4 +1,4 @@
-import { ChangeEvent } from 'react';
+import { ChangeEvent, useId } from 'react';
 import { Icon, Input } from 'jiponent';
 import { useTheme } from 'styled-components';
 import * as S from './style';
@@ -9,10 +9,11 @@ interface Props {
 
 const SearchBar = ({ onChange }: Props) => {
   const theme = useTheme();
+  const id = useId();
 
   return (
     <S.SearchContainer>
-      <Input.Label>
+      <Input.Label id={id}>
         <Icon
           name='search'
           fill={theme.colors.background}
@@ -22,10 +23,15 @@ const SearchBar = ({ onChange }: Props) => {
         />
       </Input.Label>
       <Input.Text
-        type='text'
+        id={id}
         name='keyword'
         onChange={onChange}
-        style={{ padding: '1rem', fontSize: '1.5rem', fontWeight: 600 }}
+        style={{
+          padding: '1rem',
+          fontSize: '1.5rem',
+          fontWeight: 600,
+        }}
+        borderColor={theme.colors.primaryNormal}
       />
     </S.SearchContainer>
   );
