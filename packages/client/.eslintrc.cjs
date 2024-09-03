@@ -18,6 +18,8 @@ module.exports = {
   parser: '@typescript-eslint/parser',
   plugins: ['react-refresh', '@typescript-eslint', 'react-hooks', 'prettier'],
   rules: {
+    'react/require-default-props': 'off',
+    'react/jsx-props-no-spreading': 'off',
     '@typescript-eslint/naming-convention': 'off',
     'react/display-name': 'off',
     'consistent-return': 'off',
@@ -33,7 +35,6 @@ module.exports = {
       2,
       { namedComponents: 'arrow-function' },
     ],
-    'react/jsx-props-no-spreading': ['warn'],
     'import/no-cycle': 'off',
     'no-underscore-dangle': 'off',
     'import/order': [
