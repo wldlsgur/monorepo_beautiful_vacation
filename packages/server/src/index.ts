@@ -1,4 +1,5 @@
 import express, { Express, Request, Response } from 'express';
+import cookieParser from 'cookie-parser';
 import cors from 'cors';
 import * as Router from '@/routes';
 
@@ -7,7 +8,13 @@ const port = 5000;
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(cors({ origin: 'http://localhost:5173' }));
+app.use(cookieParser());
+app.use(
+  cors({
+    origin: 'http://localhost:5173',
+    credentials: true,
+  }),
+);
 
 app.use('/api/v1/users', Router.UserRouter);
 app.use('/api/v1/rooms', Router.RoomRouter);
