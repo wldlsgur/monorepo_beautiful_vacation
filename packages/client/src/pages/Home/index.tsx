@@ -1,9 +1,13 @@
-import { useInfiniteQuery } from '@tanstack/react-query';
+import { useInfiniteQuery, useQuery } from '@tanstack/react-query';
 import { RoomListResponse } from 'common-types';
+import { Tap } from 'jiponent';
 import debounce from 'lodash/debounce';
+import { useTheme } from 'styled-components';
 import { QUERY_OPTION } from '@/shared/Constant';
 import { useInput } from '@/shared/Hook';
+import { LoginForm } from '@/widgets/auth/ui';
 import { Header, RoomList, SearchBar } from '@/widgets/Room/Ui';
+import { Profile } from '@/widgets/user';
 import * as S from './style';
 
 interface SearchKeyword {
@@ -13,6 +17,8 @@ interface SearchKeyword {
 const [offset, limit] = [0, 20];
 
 const Home = () => {
+  const theme = useTheme();
+  const { data: user } = useQuery(QUERY_OPTION.AUTH());
   const {
     value: { keyword },
     handleChangeValue,
@@ -53,7 +59,35 @@ const Home = () => {
           fetchNextPage={() => fetchNextPage()}
         />
       </S.RoomContainer>
-      <S.Sidebar />
+      <S.Sidebar>
+        <Tap
+          defaultIndex={0}
+          style={{ height: '100%', display: 'flex', flexDirection: 'column' }}
+          activeStyle={{
+            color: theme.colors.textInverse,
+            backgroundColor: theme.colors.primaryNormal,
+          }}
+          itemAttribute={{
+            style: { padding: '1rem', fontWeight: 600 },
+          }}
+        >
+          <Tap.Item
+            index={0}
+            title={user ? '내 정보' : '로그인'}
+            content={user ? <Profile /> : <LoginForm />}
+          />
+          <Tap.Item
+            index={1}
+            title='참여 방'
+            content='참여 방'
+          />
+          <Tap.Item
+            index={2}
+            title='만든 방'
+            content='만든 방'
+          />
+        </Tap>
+      </S.Sidebar>
     </S.Wrapper>
   );
 };
