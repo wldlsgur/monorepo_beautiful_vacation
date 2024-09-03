@@ -1,6 +1,6 @@
 import { ForwardedRef, forwardRef } from 'react';
 import { Room } from 'common-types';
-import * as S from './Style';
+import * as S from './style';
 
 interface Props {
   roomData: Room;
