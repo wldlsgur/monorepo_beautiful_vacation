@@ -15,6 +15,7 @@ const CONFIG = {
     host: process.env.REDIS_HOST || 'localhost',
     port: process.env.REDIS_PORT || '6379',
   },
+  COOKIE_SECRET: process.env.COOKIE_SECRET,
   JWT_SECRET: process.env.JWT_SECRET,
   KAKAO_REST_API_KEY: process.env.KAKAO_REST_API_KEY,
   KAKAO_REDIRECT_URL: process.env.KAKAO_REDIRECT_URL,

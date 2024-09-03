@@ -1,8 +1,8 @@
 import { Request, Response } from 'express';
 import { AuthModel } from '@/models';
 import { UsersModel } from '@/models';
-import { signAccessToken, signRefreshToken } from '@/util';
 import { CONFIG, redisClient } from '@/config';
+import { signAccessToken, signRefreshToken } from '@/util';
 
 const kakaoLogin = async (req: Request, res: Response) => {
   const { code } = req.body;
@@ -42,11 +42,13 @@ const kakaoLogin = async (req: Request, res: Response) => {
       httpOnly: true,
       secure: CONFIG.NODE_ENV === 'production',
       maxAge: 3600000,
+      signed: true,
     });
     res.cookie('refreshToken', refreshToken, {
       httpOnly: true,
       secure: CONFIG.NODE_ENV === 'production',
       maxAge: 86400000,
+      signed: true,
     });
 
     res.json({ data: user, message: 'success' });
