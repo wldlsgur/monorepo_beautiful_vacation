@@ -8,6 +8,10 @@ const Router = () => {
         path='/'
         element={<Pages.Home />}
       />
+      <Route
+        path='/auth/kakao'
+        element={<Pages.AuthKakao />}
+      />
     </Routes>
   );
 };

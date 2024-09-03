@@ -6,3 +6,9 @@ export const postKakaoLogin = async ({ code }: KakaoLoginRequest) => {
 
   return response.data;
 };
+
+export const checkAuth = async () => {
+  const response = await axiosInstance.get('/api/v1/auth');
+
+  return response.data;
+};
