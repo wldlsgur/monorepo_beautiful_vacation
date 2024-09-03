@@ -5,7 +5,7 @@ import { Skeleton } from 'jiponent';
 import { useInView } from 'react-intersection-observer';
 import Lottie from 'react-lottie-player';
 import { EMPTY_LOTTIE } from '@/shared/lottie';
-import RoomItem from '../RoomItem';
+import RoomItem from '../roomItem';
 import * as S from './style';
 
 interface Props {
