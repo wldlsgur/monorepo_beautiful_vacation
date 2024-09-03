@@ -2,7 +2,7 @@ import { Request, Response } from 'express';
 import { AuthModel } from '@/models';
 import { UsersModel } from '@/models';
 import { CONFIG, redisClient } from '@/config';
-import { signAccessToken, signRefreshToken } from '@/util';
+import { signAccessToken, signRefreshToken, verifyAccessToken } from '@/util';
 
 const kakaoLogin = async (req: Request, res: Response) => {
   const { code } = req.body;
@@ -57,4 +57,24 @@ const kakaoLogin = async (req: Request, res: Response) => {
   }
 };
 
-export default { kakaoLogin };
+const checkAuth = async (req: Request, res: Response) => {
+  const { accessToken } = req.signedCookies;
+
+  if (!accessToken) {
+    res.status(401).json({ data: null, message: 'accessToken is missing' });
+    return;
+  }
+
+  const { userId } = verifyAccessToken({ token: accessToken });
+
+  if (!userId) {
+    res.status(401).json({ data: null, message: 'invalid accessToken' });
+    return;
+  }
+
+  const user = await UsersModel.getUserByUserId({ userId });
+
+  res.json({ data: user, message: 'success' });
+};
+
+export default { kakaoLogin, checkAuth };

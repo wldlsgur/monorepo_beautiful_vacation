@@ -19,6 +19,23 @@ const getUserByKakaoId = async ({ kakaoId }: { kakaoId: string }) => {
   }
 };
 
+const getUserByUserId = async ({ userId }: { userId: string }) => {
+  const query = 'SELECT * FROM users WHERE user_id = ?';
+
+  try {
+    const connection = await Connection();
+    const [rows] = await connection.query<RowDataPacket[]>(query, [userId]);
+
+    if (rows.length === 0) {
+      return null;
+    }
+
+    return rows[0];
+  } catch (error) {
+    throw new Error(`DB Query Error: ${error}`);
+  }
+};
+
 const createUser = async ({
   user,
 }: {
@@ -45,5 +62,6 @@ const createUser = async ({
 
 export default {
   getUserByKakaoId,
+  getUserByUserId,
   createUser,
 };
