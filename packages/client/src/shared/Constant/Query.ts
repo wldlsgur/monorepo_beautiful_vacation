@@ -5,7 +5,7 @@ import {
 } from 'common-types';
 import { checkAuth, postKakaoLogin } from '@/entities/auth';
 import { getRoomList, getSearchRoom } from '@/entities/Room';
-import validateSearchKeyword from '@/widgets/Room/Util/ValidateSearchKeyword';
+import { validateSearchKeyword } from '@/widgets/Room/util';
 
 export const QUERY_KEY = {
   ROOM_LIST: ({ offset, limit }: RoomListRequest) => [
