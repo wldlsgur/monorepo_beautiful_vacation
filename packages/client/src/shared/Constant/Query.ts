@@ -3,7 +3,7 @@ import {
   RoomListRequest,
   SearchRoomRequest,
 } from 'common-types';
-import { postKakaoLogin } from '@/entities/auth';
+import { checkAuth, postKakaoLogin } from '@/entities/auth';
 import { getRoomList, getSearchRoom } from '@/entities/Room';
 import validateSearchKeyword from '@/widgets/Room/Util/ValidateSearchKeyword';
 
@@ -21,18 +21,19 @@ export const QUERY_KEY = {
     offset,
     limit,
   ],
+  AUTH: ['auth'],
 };
 
 export const QUERY_OPTION = {
   ROOM_LIST: ({ offset, limit }: RoomListRequest) => ({
-    queryKey: [QUERY_KEY.ROOM_LIST({ offset, limit })],
+    queryKey: QUERY_KEY.ROOM_LIST({ offset, limit }),
     queryFn: ({ pageParam }: any) => getRoomList({ offset: pageParam, limit }),
     initialPageParam: offset,
     getNextPageParam: (lastPage: any, allPages: any) =>
       lastPage.data.length < limit ? null : allPages.length * limit,
   }),
   SEARCH_ROOM: ({ keyword, offset, limit }: SearchRoomRequest) => ({
-    queryKey: [QUERY_KEY.SEARCH_ROOM({ keyword, offset, limit })],
+    queryKey: QUERY_KEY.SEARCH_ROOM({ keyword, offset, limit }),
     queryFn: ({ pageParam }: any) =>
       getSearchRoom({ keyword, offset: pageParam, limit }),
     initialPageParam: offset,
@@ -41,6 +42,12 @@ export const QUERY_OPTION = {
     enabled: !!keyword && validateSearchKeyword({ keyword }),
     gcTime: 5 * 60 * 1000,
     staleTime: 5 * 60 * 1000,
+  }),
+  AUTH: () => ({
+    queryKey: QUERY_KEY.AUTH,
+    queryFn: checkAuth,
+    gcTime: Infinity,
+    staleTime: Infinity,
   }),
 };
 
