@@ -1,29 +1,27 @@
 import { Request, Response } from 'express';
 import { AuthModel } from '@/models';
 import { UsersModel } from '@/models';
+import { signAccessToken, signRefreshToken } from '@/util';
+import { CONFIG, redisClient } from '@/config';
 
 const kakaoLogin = async (req: Request, res: Response) => {
   const { code } = req.body;
 
   try {
-    // 1. 카카오 액세스 토큰을 가져온다.
     const { data: tokenData } = await AuthModel.kakaoLogin({ code });
-    const accessToken = tokenData.access_token;
+    const { access_token: kakaoAccessToken } = tokenData;
 
-    // 2. 액세스 토큰으로 카카오 사용자 정보를 가져온다.
     const { data: userInfo } = await AuthModel.getKakaoUserInfo({
-      accessToken,
+      accessToken: kakaoAccessToken,
     });
     const {
       id,
       properties: { nickname, profile_image },
     } = userInfo;
 
-    // 3. 데이터베이스에서 해당 카카오 ID를 가진 사용자가 있는지 확인한다.
-    let user = await UsersModel.getUserByKakaoId(id);
+    let user = await UsersModel.getUserByKakaoId({ kakaoId: id });
 
     if (!user) {
-      // 4. 사용자가 없으면 새 사용자를 생성한다.
       await UsersModel.createUser({
         user: {
           username: nickname,
@@ -33,11 +31,24 @@ const kakaoLogin = async (req: Request, res: Response) => {
         },
       });
 
-      // 새로 생성된 사용자를 다시 조회한다.
-      user = await UsersModel.getUserByKakaoId(id);
+      user = await UsersModel.getUserByKakaoId({ kakaoId: id });
     }
+    const accessToken = signAccessToken({ userId: user?.user_id });
+    const refreshToken = signRefreshToken();
 
-    // 5. 사용자 정보를 반환한다.
+    redisClient.set(user?.user_id, refreshToken);
+
+    res.cookie('accessToken', accessToken, {
+      httpOnly: true,
+      secure: CONFIG.NODE_ENV === 'production',
+      maxAge: 3600000,
+    });
+    res.cookie('refreshToken', refreshToken, {
+      httpOnly: true,
+      secure: CONFIG.NODE_ENV === 'production',
+      maxAge: 86400000,
+    });
+
     res.json({ data: user, message: 'success' });
   } catch (error) {
     res.status(500).json(`Internal Server Error: ${error}`);
