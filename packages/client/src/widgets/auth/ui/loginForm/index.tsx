@@ -1,5 +1,5 @@
 import Lottie from 'react-lottie-player';
-import { ENV } from '@/shared/Constant';
+import { ENV } from '@/shared/constant';
 import { LOGO_LOTTIE } from '@/shared/lottie';
 import { KakaoIcon } from '@/shared/svg';
 import * as S from './style';
