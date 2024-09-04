@@ -6,7 +6,7 @@ import { useTheme } from 'styled-components';
 import { QUERY_OPTION } from '@/shared/constant';
 import { useInput } from '@/shared/hook';
 import { LoginForm } from '@/widgets/auth/ui';
-import { Header, RoomList, SearchBar } from '@/widgets/room/Ui';
+import { Header, RoomList, SearchBar } from '@/widgets/room/ui';
 import { Profile } from '@/widgets/user';
 import * as S from './style';
 
