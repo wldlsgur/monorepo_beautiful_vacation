@@ -22,6 +22,8 @@ const theme: DefaultTheme = {
     textPrimary: '#333333', // 기본 텍스트 색상 (진한 검정)
     textSecondary: '#7F8C8D', // 부차적인 텍스트 색상 (중간 회색)
     textInverse: '#FFFFFF', // 반전된 텍스트 색상 (흰색)
+
+    kakao: '#FEE500',
   },
   size: {
     extraSmall: '0.5rem',
