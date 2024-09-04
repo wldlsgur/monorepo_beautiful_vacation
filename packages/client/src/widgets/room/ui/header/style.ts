@@ -12,7 +12,7 @@ export const Container = styled.header`
 `;
 
 export const Title = styled.h1`
-  font-size: 4rem;
+  font-size: clamp(3rem, 5vw, 4rem);
   font-weight: 700;
   color: ${({ theme }) => theme.colors.primaryNormal};
   text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.1);
