@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { useMutation } from '@tanstack/react-query';
 import Lottie from 'react-lottie-player';
 import { useNavigate } from 'react-router-dom';
-import { MUTATE_OPTION, DOMAIN_URL } from '@/shared/Constant';
+import { MUTATE_OPTION, DOMAIN_URL } from '@/shared/constant';
 import { KAKAO_LOANING_LOTTIE } from '@/shared/lottie';
 import * as S from './style';
 

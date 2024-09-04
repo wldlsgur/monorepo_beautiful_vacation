@@ -1,5 +1,5 @@
 import { RoomListRequest, SearchRoomRequest } from 'common-types';
-import { axiosInstance } from '@/shared/Config';
+import { axiosInstance } from '@/shared/config';
 
 export const getRoomList = async ({ limit, offset }: RoomListRequest) => {
   const response = await axiosInstance.get('/api/v1/rooms', {

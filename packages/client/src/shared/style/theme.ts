@@ -1,6 +1,6 @@
 import { DefaultTheme } from 'styled-components';
 
-const Theme: DefaultTheme = {
+const theme: DefaultTheme = {
   colors: {
     primaryNormal: '#4A90E2', // 메인 블루 색상
     primaryDark: '#3A78B0', // 어두운 블루 색상 (primary의 dark variant)
@@ -41,4 +41,4 @@ const Theme: DefaultTheme = {
   },
 };
 
-export default Theme;
+export default theme;
