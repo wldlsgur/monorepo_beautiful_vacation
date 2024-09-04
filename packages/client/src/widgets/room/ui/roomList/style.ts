@@ -4,26 +4,28 @@ export const RoomList = styled.ul`
   flex-grow: 1;
   display: flex;
   flex-direction: column;
-  flex-wrap: nowrap;
-  margin: 3rem 3rem;
+  margin: 2rem;
+  padding: 1rem;
   overflow-y: auto;
+  background-color: ${({ theme }) => theme.colors.surface};
+  border-radius: 0.8rem;
 
   &::-webkit-scrollbar {
-    width: 1rem;
-    padding: 0;
-    margin: 0;
-    border: none;
+    width: 0.8rem;
+    background: ${({ theme }) => theme.colors.border};
+    border-radius: 0.8rem;
   }
 
+  /* 스크롤바 트랙 스타일 */
   &::-webkit-scrollbar-track {
-    background: transparent;
-    border-radius: 50%;
+    background: ${({ theme }) => theme.colors.surface};
+    border-radius: 0.8rem;
   }
 
   &::-webkit-scrollbar-thumb {
     background: ${({ theme }) => theme.colors.primaryLight};
-    border-radius: 0.5rem;
-    transition: all 1s;
+    border-radius: 0.8rem;
+    transition: background-color 0.3s ease;
   }
 
   &::-webkit-scrollbar-thumb:hover {

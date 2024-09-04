@@ -62,13 +62,27 @@ const Home = () => {
       <S.Sidebar>
         <Tap
           defaultIndex={0}
-          style={{ height: '100%', display: 'flex', flexDirection: 'column' }}
+          style={{
+            height: '100%',
+            display: 'flex',
+            flexDirection: 'column',
+            backgroundColor: theme.colors.surface,
+            borderRadius: '1rem',
+            boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
+          }}
           activeStyle={{
             color: theme.colors.textInverse,
             backgroundColor: theme.colors.primaryNormal,
+            fontWeight: 700,
           }}
           itemAttribute={{
-            style: { padding: '1rem', fontWeight: 600 },
+            style: {
+              padding: '1rem',
+              fontWeight: 600,
+              cursor: 'pointer',
+              transition: 'background-color 0.3s ease, color 0.3s ease',
+              borderRadius: '0.5rem',
+            },
           }}
         >
           <Tap.Item

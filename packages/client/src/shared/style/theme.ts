@@ -2,28 +2,31 @@ import { DefaultTheme } from 'styled-components';
 
 const theme: DefaultTheme = {
   colors: {
-    primaryNormal: '#4A90E2', // 메인 블루 색상
-    primaryDark: '#3A78B0', // 어두운 블루 색상 (primary의 dark variant)
-    primaryLight: '#B3D4FC', // 밝은 블루 색상 (primary의 light variant)
-    primaryReverse: '#FFFFFF', // 메인 색상의 반전 (흰색)
+    primaryNormal: '#4A90E2',
+    primaryDark: '#3A78B0',
+    primaryLight: '#B3D4FC',
+    primaryReverse: '#FFFFFF',
 
-    secondary: '#50E3C2', // 보조 색상 (밝은 민트)
-    secondaryDark: '#3CB294', // 어두운 민트 색상
-    secondaryLight: '#D0FAF1', // 밝은 민트 색상
+    secondary: '#FFA500',
 
-    warning: '#F5A623', // 경고 색상 (주황색)
-    success: '#7ED321', // 성공 색상 (녹색)
-    error: '#D0021B', // 에러 색상 (빨강)
+    warning: '#F5A623',
+    success: '#7ED321',
+    error: '#D0021B',
 
-    background: '#F7F8FA', // 배경색 (밝은 회색)
-    surface: '#FFFFFF', // 서페이스 색상 (흰색)
-    border: '#E1E4E8', // 테두리 색상 (연한 회색)
+    background: '#F7F8FA',
+    surface: '#FFFFFF',
+    border: '#E1E4E8',
 
-    textPrimary: '#333333', // 기본 텍스트 색상 (진한 검정)
-    textSecondary: '#7F8C8D', // 부차적인 텍스트 색상 (중간 회색)
-    textInverse: '#FFFFFF', // 반전된 텍스트 색상 (흰색)
+    textPrimary: '#333333',
+    textSecondary: '#7F8C8D',
+    textInverse: '#FFFFFF',
 
     kakao: '#FEE500',
+
+    hoverBackground: '#E69500',
+    hoverText: '#FFF5E0',
+    disabledBackground: '#FFD580',
+    disabledText: '#999999',
   },
   size: {
     extraSmall: '0.5rem',

@@ -11,7 +11,7 @@ const Header = () => {
         name='calendar'
         fill={theme.colors.background}
         color={theme.colors.primaryNormal}
-        size='4rem'
+        size='3rem'
       />
       <S.Title>화려한 휴가</S.Title>
     </S.Container>

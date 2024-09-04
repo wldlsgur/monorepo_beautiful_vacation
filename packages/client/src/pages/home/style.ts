@@ -9,7 +9,6 @@ export const RoomContainer = styled.section`
   flex: 1 0 70%;
   display: flex;
   flex-direction: column;
-  border-right: 3px solid ${({ theme }) => theme.colors.primaryLight};
 `;
 
 export const Sidebar = styled.aside`
