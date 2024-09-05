@@ -6,31 +6,15 @@ export const RoomList = styled.ul`
   flex-direction: column;
   margin: 2rem;
   padding: 1rem;
-  overflow-y: auto;
+  overflow-y: scroll;
   background-color: ${({ theme }) => theme.colors.surface};
   border-radius: 0.8rem;
 
-  &::-webkit-scrollbar {
-    width: 0.8rem;
-    background: ${({ theme }) => theme.colors.border};
-    border-radius: 0.8rem;
+  ::-webkit-scrollbar {
+    display: none;
   }
-
-  /* 스크롤바 트랙 스타일 */
-  &::-webkit-scrollbar-track {
-    background: ${({ theme }) => theme.colors.surface};
-    border-radius: 0.8rem;
-  }
-
-  &::-webkit-scrollbar-thumb {
-    background: ${({ theme }) => theme.colors.primaryLight};
-    border-radius: 0.8rem;
-    transition: background-color 0.3s ease;
-  }
-
-  &::-webkit-scrollbar-thumb:hover {
-    background: ${({ theme }) => theme.colors.primaryNormal};
-  }
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 `;
 
 export const EmptyContainer = styled.div`
