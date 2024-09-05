@@ -2,7 +2,7 @@ import { Request, Response } from 'express';
 import { AuthModel } from '@/models';
 import { UsersModel } from '@/models';
 import { CONFIG, redisClient } from '@/config';
-import { signAccessToken, signRefreshToken, verifyAccessToken } from '@/util';
+import { signAccessToken, signRefreshToken, verifyToken } from '@/util';
 
 const kakaoLogin = async (req: Request, res: Response) => {
   const { code } = req.body;
@@ -34,9 +34,9 @@ const kakaoLogin = async (req: Request, res: Response) => {
       user = await UsersModel.getUserByKakaoId({ kakaoId: id });
     }
     const accessToken = signAccessToken({ userId: user?.user_id });
-    const refreshToken = signRefreshToken();
+    const refreshToken = signRefreshToken({ userId: user?.user_id });
 
-    redisClient.set(user?.user_id, refreshToken, 'PX', 86400000);
+    await redisClient.set(user?.user_id, refreshToken, 'PX', 86400000);
 
     res.cookie('accessToken', accessToken, {
       httpOnly: true,
@@ -65,16 +65,20 @@ const checkAuth = async (req: Request, res: Response) => {
     return;
   }
 
-  const { userId } = verifyAccessToken({ token: accessToken });
+  try {
+    const { userId } = verifyToken({ token: accessToken });
 
-  if (!userId) {
-    res.status(401).json({ data: null, message: 'invalid accessToken' });
-    return;
+    if (!userId) {
+      res.status(401).json({ data: null, message: 'invalid accessToken' });
+      return;
+    }
+
+    const user = await UsersModel.getUserByUserId({ userId });
+
+    res.json({ data: user, message: 'success' });
+  } catch (error) {
+    res.status(500).json(`Internal Server Error: ${error}`);
   }
-
-  const user = await UsersModel.getUserByUserId({ userId });
-
-  res.json({ data: user, message: 'success' });
 };
 
 const logout = async (req: Request, res: Response) => {
@@ -112,4 +116,51 @@ const logout = async (req: Request, res: Response) => {
   }
 };
 
-export default { kakaoLogin, checkAuth, logout };
+const reissueAccessToken = async (req: Request, res: Response) => {
+  const { refreshToken } = req.signedCookies;
+
+  if (!refreshToken) {
+    res.status(401).json({ message: 'refreshToken is missing' });
+    return;
+  }
+
+  try {
+    const { userId } = verifyToken({ token: refreshToken });
+
+    if (!userId) {
+      res.status(401).json({ message: 'invalid refreshToken' });
+      return;
+    }
+
+    const storedToken = await redisClient.get(userId.toString());
+
+    if (refreshToken !== storedToken) {
+      res.status(401).json({ message: 'invalid refreshToken' });
+      return;
+    }
+
+    const accessToken = signAccessToken({ userId });
+    const newRefreshToken = signRefreshToken({ userId });
+
+    await redisClient.set(userId.toString(), newRefreshToken, 'PX', 86400000);
+
+    res.cookie('accessToken', accessToken, {
+      httpOnly: true,
+      secure: CONFIG.NODE_ENV === 'production',
+      maxAge: 3600000,
+      signed: true,
+    });
+    res.cookie('refreshToken', newRefreshToken, {
+      httpOnly: true,
+      secure: CONFIG.NODE_ENV === 'production',
+      maxAge: 86400000,
+      signed: true,
+    });
+
+    res.json({ data: null, message: 'success' });
+  } catch (error) {
+    res.status(500).json(`Internal Server Error: ${error}`);
+  }
+};
+
+export default { kakaoLogin, checkAuth, logout, reissueAccessToken };
