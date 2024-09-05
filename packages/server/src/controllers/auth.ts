@@ -36,7 +36,7 @@ const kakaoLogin = async (req: Request, res: Response) => {
     const accessToken = signAccessToken({ userId: user?.user_id });
     const refreshToken = signRefreshToken();
 
-    redisClient.set(user?.user_id, refreshToken);
+    redisClient.set(user?.user_id, refreshToken, 'PX', 86400000);
 
     res.cookie('accessToken', accessToken, {
       httpOnly: true,
@@ -77,4 +77,39 @@ const checkAuth = async (req: Request, res: Response) => {
   res.json({ data: user, message: 'success' });
 };
 
-export default { kakaoLogin, checkAuth };
+const logout = async (req: Request, res: Response) => {
+  const { accessToken, refreshToken } = req.signedCookies;
+  const { userId } = req.body;
+
+  try {
+    const hasToken = await redisClient.exists(userId);
+
+    if (hasToken) {
+      await redisClient.del(userId);
+    }
+
+    if (accessToken) {
+      res.clearCookie('accessToken', {
+        httpOnly: true,
+        secure: CONFIG.NODE_ENV === 'production',
+        expires: new Date(0),
+        signed: true,
+      });
+    }
+
+    if (refreshToken) {
+      res.clearCookie('refreshToken', {
+        httpOnly: true,
+        secure: CONFIG.NODE_ENV === 'production',
+        expires: new Date(0),
+        signed: true,
+      });
+    }
+
+    res.status(200).json({ data: null, message: 'success' });
+  } catch (error) {
+    res.status(500).json(`Internal Server Error: ${error}`);
+  }
+};
+
+export default { kakaoLogin, checkAuth, logout };
