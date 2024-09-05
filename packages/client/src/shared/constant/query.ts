@@ -1,6 +1,5 @@
 import {
   KakaoLoginRequest,
-  LogoutRequest,
   RoomListRequest,
   SearchRoomRequest,
 } from 'common-types';
@@ -68,7 +67,7 @@ export const MUTATE_OPTION = {
   KAKAO_LOGIN: ({ code }: KakaoLoginRequest) => ({
     mutationFn: () => postKakaoLogin({ code }),
   }),
-  LOGOUT: ({ userId }: LogoutRequest) => ({
-    mutationFn: () => postLogout({ userId }),
+  LOGOUT: () => ({
+    mutationFn: postLogout,
   }),
 };

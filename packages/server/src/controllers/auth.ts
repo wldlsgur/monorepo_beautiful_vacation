@@ -1,8 +1,9 @@
-import { Request, Response } from 'express';
+import { NextFunction, Request, Response } from 'express';
 import { AuthModel } from '@/models';
 import { UsersModel } from '@/models';
 import { CONFIG, redisClient } from '@/config';
 import { signAccessToken, signRefreshToken, verifyToken } from '@/util';
+import { AuthRequest } from '@/type';
 
 const kakaoLogin = async (req: Request, res: Response) => {
   const { code } = req.body;
@@ -57,22 +58,15 @@ const kakaoLogin = async (req: Request, res: Response) => {
   }
 };
 
-const checkAuth = async (req: Request, res: Response) => {
-  const { accessToken } = req.signedCookies;
+const checkAuth = async (req: AuthRequest, res: Response) => {
+  const { userId } = req;
 
-  if (!accessToken) {
-    res.status(401).json({ data: null, message: 'accessToken is missing' });
+  if (!userId) {
+    res.status(401).json({ data: null, message: 'invalid accessToken' });
     return;
   }
 
   try {
-    const { userId } = verifyToken({ token: accessToken });
-
-    if (!userId) {
-      res.status(401).json({ data: null, message: 'invalid accessToken' });
-      return;
-    }
-
     const user = await UsersModel.getUserByUserId({ userId });
 
     res.json({ data: user, message: 'success' });
@@ -81,9 +75,14 @@ const checkAuth = async (req: Request, res: Response) => {
   }
 };
 
-const logout = async (req: Request, res: Response) => {
+const logout = async (req: AuthRequest, res: Response) => {
   const { accessToken, refreshToken } = req.signedCookies;
-  const { userId } = req.body;
+  const { userId } = req;
+
+  if (!userId) {
+    res.status(401).json({ data: null, message: 'invalid accessToken' });
+    return;
+  }
 
   try {
     const hasToken = await redisClient.exists(userId);
@@ -163,4 +162,38 @@ const reissueAccessToken = async (req: Request, res: Response) => {
   }
 };
 
-export default { kakaoLogin, checkAuth, logout, reissueAccessToken };
+export const authenticateToken = (
+  req: AuthRequest,
+  res: Response,
+  next: NextFunction,
+) => {
+  const { accessToken } = req.signedCookies;
+
+  if (!accessToken) {
+    res.status(401).json({ message: 'accessToken is missing' });
+    return;
+  }
+
+  try {
+    const { userId } = verifyToken({ token: accessToken });
+
+    if (!userId) {
+      res.status(401).json({ message: 'invalid accessToken' });
+      return;
+    }
+
+    req.userId = userId;
+    next();
+  } catch {
+    res.status(401).json({ message: 'invalid accessToken' });
+    return;
+  }
+};
+
+export default {
+  kakaoLogin,
+  checkAuth,
+  logout,
+  reissueAccessToken,
+  authenticateToken,
+};

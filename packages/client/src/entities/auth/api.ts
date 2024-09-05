@@ -1,4 +1,4 @@
-import { KakaoLoginRequest, LogoutRequest } from 'common-types';
+import { KakaoLoginRequest } from 'common-types';
 import { axiosInstance } from '@/shared/config';
 
 export const postKakaoLogin = async ({ code }: KakaoLoginRequest) => {
@@ -13,8 +13,8 @@ export const checkAuth = async () => {
   return response.data;
 };
 
-export const postLogout = async ({ userId }: LogoutRequest) => {
-  const response = await axiosInstance.post('/api/v1/auth/logout', { userId });
+export const postLogout = async () => {
+  const response = await axiosInstance.post('/api/v1/auth/logout');
 
   return response.data;
 };
