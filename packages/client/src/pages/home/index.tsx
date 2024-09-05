@@ -46,7 +46,7 @@ const Home = () => {
   const fetchNextPage = keyword ? fetchNextSearchPage : fetchNextRoomListPage;
   const hasNextPage = keyword ? hasNextSearchPage : hasNextRoomListPage;
   const isFetching = keyword ? isFetchingSearch : isFetchingRoomList;
-  const isLogin = user && !isError;
+  const isLogin = user?.data && !isError;
 
   return (
     <S.Wrapper>

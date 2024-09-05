@@ -18,3 +18,9 @@ export const postLogout = async ({ userId }: LogoutRequest) => {
 
   return response.data;
 };
+
+export const reissueToken = async () => {
+  const response = await axiosInstance.post('/api/v1/auth/reissue');
+
+  return response.data;
+};

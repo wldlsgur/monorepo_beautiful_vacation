@@ -4,7 +4,12 @@ import {
   RoomListRequest,
   SearchRoomRequest,
 } from 'common-types';
-import { checkAuth, postKakaoLogin, postLogout } from '@/entities/auth';
+import {
+  checkAuth,
+  postKakaoLogin,
+  postLogout,
+  reissueToken,
+} from '@/entities/auth';
 import { getRoomList, getSearchRoom } from '@/entities/room';
 import { validateSearchKeyword } from '@/widgets/room/util';
 
@@ -23,6 +28,7 @@ export const QUERY_KEY = {
     limit,
   ],
   AUTH: ['auth'],
+  REISSUE_TOKEN: ['reissue', 'token'],
 };
 
 export const QUERY_OPTION = {
@@ -49,6 +55,12 @@ export const QUERY_OPTION = {
     queryFn: checkAuth,
     gcTime: Infinity,
     staleTime: Infinity,
+  }),
+  REISSUE_TOKEN: () => ({
+    queryKey: QUERY_KEY.REISSUE_TOKEN,
+    queryFn: reissueToken,
+    gcTime: 0,
+    staleTime: 0,
   }),
 };
 
