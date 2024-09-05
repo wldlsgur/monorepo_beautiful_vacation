@@ -18,7 +18,7 @@ const [offset, limit] = [0, 20];
 
 const Home = () => {
   const theme = useTheme();
-  const { data: user } = useQuery(QUERY_OPTION.AUTH());
+  const { data: user, isError } = useQuery(QUERY_OPTION.AUTH());
   const {
     value: { keyword },
     handleChangeValue,
@@ -46,6 +46,7 @@ const Home = () => {
   const fetchNextPage = keyword ? fetchNextSearchPage : fetchNextRoomListPage;
   const hasNextPage = keyword ? hasNextSearchPage : hasNextRoomListPage;
   const isFetching = keyword ? isFetchingSearch : isFetchingRoomList;
+  const isLogin = user && !isError;
 
   return (
     <S.Wrapper>
@@ -87,8 +88,8 @@ const Home = () => {
         >
           <Tap.Item
             index={0}
-            title={user ? '내 정보' : '로그인'}
-            content={user ? <Profile /> : <LoginForm />}
+            title={isLogin ? '내 정보' : '로그인'}
+            content={isLogin ? <Profile /> : <LoginForm />}
           />
           <Tap.Item
             index={1}
