@@ -1,9 +1,10 @@
 import {
   KakaoLoginRequest,
+  LogoutRequest,
   RoomListRequest,
   SearchRoomRequest,
 } from 'common-types';
-import { checkAuth, postKakaoLogin } from '@/entities/auth';
+import { checkAuth, postKakaoLogin, postLogout } from '@/entities/auth';
 import { getRoomList, getSearchRoom } from '@/entities/room';
 import { validateSearchKeyword } from '@/widgets/room/util';
 
@@ -54,5 +55,8 @@ export const QUERY_OPTION = {
 export const MUTATE_OPTION = {
   KAKAO_LOGIN: ({ code }: KakaoLoginRequest) => ({
     mutationFn: () => postKakaoLogin({ code }),
+  }),
+  LOGOUT: ({ userId }: LogoutRequest) => ({
+    mutationFn: () => postLogout({ userId }),
   }),
 };
