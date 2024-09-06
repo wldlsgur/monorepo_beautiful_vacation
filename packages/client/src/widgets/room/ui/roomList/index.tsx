@@ -1,10 +1,7 @@
-import { useEffect } from 'react';
 import { InfiniteData } from '@tanstack/react-query';
 import { Room, RoomListResponse } from 'common-types';
-import { Skeleton } from 'jiponent';
-import { useInView } from 'react-intersection-observer';
-import Lottie from 'react-lottie-player';
-import { EMPTY_LOTTIE } from '@/shared/lottie';
+import { useInfinityList } from '@/shared/hook';
+import { RoomListEmpty, RoomListSkeleton } from '@/shared/ui';
 import RoomItem from '../roomItem';
 import * as S from './style';
 
@@ -16,26 +13,10 @@ interface Props {
 }
 
 const RoomList = ({ data, hasNextPage, isFetching, fetchNextPage }: Props) => {
-  const [ref, inView] = useInView({ threshold: 0.5 });
-
-  useEffect(() => {
-    if (inView && hasNextPage && !isFetching) {
-      fetchNextPage();
-    }
-  }, [fetchNextPage, hasNextPage, inView, isFetching]);
+  const ref = useInfinityList({ hasNextPage, isFetching, fetchNextPage });
 
   if (!data || data.pages[0].data.length === 0) {
-    return (
-      <S.EmptyContainer>
-        <Lottie
-          animationData={EMPTY_LOTTIE}
-          play
-          loop
-          speed={0.5}
-          style={{ width: 200, height: 200 }}
-        />
-      </S.EmptyContainer>
-    );
+    return <RoomListEmpty />;
   }
 
   return (
@@ -55,21 +36,7 @@ const RoomList = ({ data, hasNextPage, isFetching, fetchNextPage }: Props) => {
           );
         }),
       )}
-      {isFetching &&
-        Array.from({ length: 9 }, (_, index) => (
-          <S.LoadingItem key={index}>
-            <Skeleton.Paragraph
-              line={1}
-              height='1.5rem'
-              style={{ flexBasis: '80%' }}
-            />
-            <Skeleton.Paragraph
-              line={1}
-              height='1.5rem'
-              style={{ flexBasis: '10%' }}
-            />
-          </S.LoadingItem>
-        ))}
+      {isFetching && <RoomListSkeleton length={9} />}
     </S.RoomList>
   );
 };

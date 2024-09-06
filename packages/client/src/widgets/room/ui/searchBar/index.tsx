@@ -1,15 +1,22 @@
 import { ChangeEvent, useId } from 'react';
 import { Icon, Input } from 'jiponent';
+import debounce from 'lodash/debounce';
 import { useTheme } from 'styled-components';
 import * as S from './style';
 
 interface Props {
-  onChange: (event: ChangeEvent<HTMLInputElement>) => void;
+  onChange: (keyword: string) => void;
 }
 
-const SearchBar = ({ onChange }: Props) => {
-  const theme = useTheme();
+const SearchBar = ({ onChange = () => {} }: Props) => {
   const id = useId();
+  const theme = useTheme();
+
+  const handleChangeKeyword = (event: ChangeEvent<HTMLInputElement>) => {
+    const { value } = event.target;
+
+    onChange(value);
+  };
 
   return (
     <S.SearchContainer>
@@ -25,7 +32,7 @@ const SearchBar = ({ onChange }: Props) => {
       <S.CustomInput
         id={id}
         name='keyword'
-        onChange={onChange}
+        onChange={debounce(handleChangeKeyword, 400)}
         borderColor={theme.colors.primaryNormal}
       />
     </S.SearchContainer>
