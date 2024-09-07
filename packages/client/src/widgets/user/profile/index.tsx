@@ -1,18 +1,15 @@
-import { useQuery } from '@tanstack/react-query';
-import { UserResponse } from 'common-types';
+import { User } from 'common-types';
 import { Avatar } from 'jiponent';
-import { QUERY_OPTION } from '@/shared/constant';
-import { LogoutButton } from '@/widgets/auth/ui';
+import { withAuth } from '@/shared/hoc';
+import { LoginForm, LogoutButton } from '@/widgets/auth/ui';
 import * as S from './style';
 
-const Profile = () => {
-  const { data } = useQuery<UserResponse>(QUERY_OPTION.AUTH());
+interface Props {
+  user: User;
+}
 
-  if (!data?.data) {
-    return;
-  }
-
-  const { username, profile_image } = data.data;
+const Profile = ({ user }: Props) => {
+  const { username, profile_image } = user;
 
   return (
     <S.Wrapper>
@@ -28,4 +25,4 @@ const Profile = () => {
   );
 };
 
-export default Profile;
+export default withAuth(Profile, LoginForm);
