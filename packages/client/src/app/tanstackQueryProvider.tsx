@@ -7,13 +7,15 @@ import {
 } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { AxiosError } from 'axios';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { DOMAIN_URL, QUERY_KEY, QUERY_OPTION } from '@/shared/constant';
 
 const isDevelopment = process.env.NODE_ENV === 'development';
 
 const TanstackQueryProvider = ({ children }: PropsWithChildren) => {
   const navigate = useNavigate();
+  const { pathname } = useLocation();
+
   const queryClient = new QueryClient({
     queryCache: new QueryCache({
       onError: async (error, { queryKey }) => {
@@ -27,7 +29,10 @@ const TanstackQueryProvider = ({ children }: PropsWithChildren) => {
               queryClient.invalidateQueries({ queryKey });
             }
           } catch {
-            navigate(DOMAIN_URL.HOME);
+            if (pathname !== DOMAIN_URL.HOME) {
+              navigate(DOMAIN_URL.HOME);
+            }
+
             if (queryKey !== QUERY_KEY.AUTH) {
               queryClient.invalidateQueries({ queryKey });
             }
