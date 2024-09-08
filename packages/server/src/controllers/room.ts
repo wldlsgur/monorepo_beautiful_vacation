@@ -37,4 +37,26 @@ const getSearchRoom = async (req: Request, res: Response) => {
   }
 };
 
-export default { getRoomList, getSearchRoom };
+const createRoom = async (req: Request, res: Response) => {
+  const { room_name, password, owner_id, max_participants } = req.body;
+
+  try {
+    if (!room_name || !password || !owner_id || !max_participants) {
+      res.status(400).json({ error: 'All fields are required' });
+      return;
+    }
+
+    const result = await RoomModel.createRoom({
+      room_name,
+      password,
+      owner_id,
+      max_participants,
+    });
+
+    res.json({ data: result, message: 'success' });
+  } catch (error) {
+    res.status(500).json(`Internal Server Error: ${error}`);
+  }
+};
+
+export default { getRoomList, getSearchRoom, createRoom };

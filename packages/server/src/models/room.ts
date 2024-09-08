@@ -1,5 +1,11 @@
-import { RoomListRequest, SearchRoomRequest } from 'common-types';
-import { Connection } from '@/config';
+import { ResultSetHeader } from 'mysql2/promise';
+import bcrypt from 'bcrypt';
+import {
+  CreateRoomRequest,
+  RoomListRequest,
+  SearchRoomRequest,
+} from 'common-types';
+import { CONFIG, Connection } from '@/config';
 
 const getRoomList = async ({ limit, offset }: RoomListRequest) => {
   const query = `
@@ -40,7 +46,37 @@ const getSearchRoom = async ({ keyword, limit, offset }: SearchRoomRequest) => {
   }
 };
 
+const createRoom = async ({
+  room_name,
+  password,
+  owner_id,
+  max_participants,
+}: CreateRoomRequest) => {
+  const query = `
+    INSERT INTO chat_rooms (room_name, password, owner_id, max_participants, current_participants)
+    VALUES (?, ?, ?, ?, 0)
+  `;
+  const hashedPassword = await bcrypt.hash(password, CONFIG.BCRYPT_SALT_ROUNDS);
+
+  try {
+    const connection = await Connection();
+    const [result] = await connection.query<ResultSetHeader>(query, [
+      room_name,
+      hashedPassword,
+      owner_id,
+      max_participants,
+    ]);
+
+    return {
+      roomId: result.insertId,
+    };
+  } catch (error) {
+    throw new Error(`DB Insert Error: ${error}`);
+  }
+};
+
 export default {
   getRoomList,
   getSearchRoom,
+  createRoom,
 };
