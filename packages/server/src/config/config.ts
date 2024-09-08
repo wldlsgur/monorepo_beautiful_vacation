@@ -19,7 +19,8 @@ const CONFIG = {
   JWT_SECRET: process.env.JWT_SECRET,
   KAKAO_REST_API_KEY: process.env.KAKAO_REST_API_KEY,
   KAKAO_REDIRECT_URL: process.env.KAKAO_REDIRECT_URL,
-  NODE_ENV: process.env.NODE_ENV,
+  NODE_ENV: process.env.NODE_ENV || 'development',
+  BCRYPT_SALT_ROUNDS: process.env.BCRYPT_SALT_ROUNDS || 10,
 };
 
 export default CONFIG;
