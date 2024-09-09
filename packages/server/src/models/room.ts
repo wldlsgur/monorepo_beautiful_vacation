@@ -1,7 +1,7 @@
 import { ResultSetHeader } from 'mysql2/promise';
 import bcrypt from 'bcrypt';
 import {
-  CreateRoomRequest,
+  CreateRoomServerRequest,
   RoomListRequest,
   SearchRoomRequest,
 } from 'common-types';
@@ -51,12 +51,15 @@ const createRoom = async ({
   password,
   owner_id,
   max_participants,
-}: CreateRoomRequest) => {
+}: CreateRoomServerRequest) => {
   const query = `
     INSERT INTO chat_rooms (room_name, password, owner_id, max_participants, current_participants)
     VALUES (?, ?, ?, ?, 0)
   `;
-  const hashedPassword = await bcrypt.hash(password, CONFIG.BCRYPT_SALT_ROUNDS);
+  const hashedPassword = await bcrypt.hash(
+    password,
+    Number(CONFIG.BCRYPT_SALT_ROUNDS),
+  );
 
   try {
     const connection = await Connection();
