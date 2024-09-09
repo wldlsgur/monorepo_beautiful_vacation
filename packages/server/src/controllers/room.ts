@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import { RoomModel } from '@/models';
+import { AuthRequest } from '@/type';
 
 const getRoomList = async (req: Request, res: Response) => {
   const limit = parseInt(req.query.limit as string, 10) || 10;
@@ -37,11 +38,12 @@ const getSearchRoom = async (req: Request, res: Response) => {
   }
 };
 
-const createRoom = async (req: Request, res: Response) => {
-  const { room_name, password, owner_id, max_participants } = req.body;
+const createRoom = async (req: AuthRequest, res: Response) => {
+  const { room_name, password, max_participants } = req.body;
+  const { userId } = req;
 
   try {
-    if (!room_name || !password || !owner_id || !max_participants) {
+    if (!room_name || !password || !userId || !max_participants) {
       res.status(400).json({ error: 'All fields are required' });
       return;
     }
@@ -49,7 +51,7 @@ const createRoom = async (req: Request, res: Response) => {
     const result = await RoomModel.createRoom({
       room_name,
       password,
-      owner_id,
+      owner_id: Number(userId),
       max_participants,
     });
 
