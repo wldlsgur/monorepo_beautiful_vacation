@@ -21,6 +21,7 @@ const RoomForm = () => {
         <S.Wrapper>
           <S.Label>제목</S.Label>
           <S.Text
+            autoComplete='organization'
             {...register(
               'room_name',
               ROOM_FORM_POST.VALIDATION_RULES.ROOM_NAME,
@@ -34,6 +35,7 @@ const RoomForm = () => {
           <S.Label>비밀번호</S.Label>
           <S.Text
             type='password'
+            autoComplete='new-password'
             {...register('password', ROOM_FORM_POST.VALIDATION_RULES.PASSWORD)}
           />
           <S.ErrorMessage visible={!!password}>
