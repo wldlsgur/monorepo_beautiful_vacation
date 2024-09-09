@@ -1,7 +1,8 @@
 import { useQuery } from '@tanstack/react-query';
 import { useTheme } from 'styled-components';
 import { QUERY_OPTION } from '@/shared/constant';
-import { Profile } from '@/widgets/user';
+import { RoomForm } from '@/widgets/room/ui';
+import { Profile } from '@/widgets/user/ui';
 import * as S from './style';
 
 const HomeTap = () => {
@@ -36,7 +37,7 @@ const HomeTap = () => {
       <S.HomeTapItem
         index={3}
         title='방 생성'
-        content='만든 방'
+        content={<RoomForm />}
       />
     </S.HomeTap>
   );

@@ -1,5 +1,6 @@
 import { Input } from 'jiponent';
 import styled from 'styled-components';
+import { inputStyle } from '@/shared/style';
 
 export const SearchContainer = styled.div`
   display: flex;
@@ -13,15 +14,5 @@ export const SearchContainer = styled.div`
 `;
 
 export const CustomInput = styled(Input.Text)`
-  padding: 1rem;
-  font-size: 1.5rem;
-  font-weight: 600;
-  transition:
-    border-color 0.3s ease,
-    background-color 0.3s ease;
-
-  &:focus {
-    border-color: ${({ theme }) => theme.colors.primaryDark} !important;
-    background-color: ${({ theme }) => theme.colors.primaryLight};
-  }
+  ${inputStyle}
 `;
