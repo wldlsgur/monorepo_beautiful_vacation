@@ -48,7 +48,7 @@ const TanstackQueryProvider = ({ children }: PropsWithChildren) => {
           try {
             await queryClient.fetchQuery(QUERY_OPTION.REISSUE_TOKEN());
 
-            if (mutation.options && mutation.options.mutationFn) {
+            if (mutation?.options?.mutationFn && variables) {
               const { mutationFn } = mutation.options;
 
               await mutationFn(variables);
