@@ -2,6 +2,7 @@ import { QueryClient } from '@tanstack/react-query';
 import {
   CreateRoomClientRequest,
   KakaoLoginRequest,
+  ParticipatedRoomClientRequest,
   RoomListRequest,
   SearchRoomRequest,
 } from 'common-types';
@@ -11,7 +12,12 @@ import {
   postLogout,
   reissueToken,
 } from '@/entities/auth';
-import { getRoomList, getSearchRoom, postRoom } from '@/entities/room';
+import {
+  getParticipatedRoom,
+  getRoomList,
+  getSearchRoom,
+  postRoom,
+} from '@/entities/room';
 import { validateSearchKeyword } from '@/widgets/room/util';
 
 export const QUERY_KEY = {
@@ -24,7 +30,15 @@ export const QUERY_KEY = {
   SEARCH_ROOM: ({ keyword, offset, limit }: SearchRoomRequest) => [
     'room',
     'search',
+    'list',
     keyword,
+    offset,
+    limit,
+  ],
+  PARTICIPATE_ROOM: ({ offset, limit }: ParticipatedRoomClientRequest) => [
+    'room',
+    'participate',
+    'list',
     offset,
     limit,
   ],
@@ -50,6 +64,14 @@ export const QUERY_OPTION = {
     enabled: !!keyword && validateSearchKeyword({ keyword }),
     gcTime: 5 * 60 * 1000,
     staleTime: 5 * 60 * 1000,
+  }),
+  PARTICIPATE_ROOM: ({ offset, limit }: ParticipatedRoomClientRequest) => ({
+    queryKey: QUERY_KEY.PARTICIPATE_ROOM({ offset, limit }),
+    queryFn: ({ pageParam }: any) =>
+      getParticipatedRoom({ offset: pageParam, limit }),
+    initialPageParam: offset,
+    getNextPageParam: (lastPage: any, allPages: any) =>
+      lastPage.data.length < limit ? null : allPages.length * limit,
   }),
   AUTH: () => ({
     queryKey: QUERY_KEY.AUTH,

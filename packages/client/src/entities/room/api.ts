@@ -1,5 +1,6 @@
 import {
   CreateRoomClientRequest,
+  ParticipatedRoomClientRequest,
   RoomListRequest,
   SearchRoomRequest,
 } from 'common-types';
@@ -24,6 +25,20 @@ export const getSearchRoom = async ({
   const response = await axiosInstance.get('/api/v1/rooms/search', {
     params: {
       keyword,
+      limit,
+      offset,
+    },
+  });
+
+  return response.data;
+};
+
+export const getParticipatedRoom = async ({
+  limit,
+  offset,
+}: ParticipatedRoomClientRequest) => {
+  const response = await axiosInstance.get('/api/v1/rooms/participated', {
+    params: {
       limit,
       offset,
     },
