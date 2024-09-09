@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
-import { RoomModel } from '@/models';
 import { AuthRequest } from '@/type';
+import { RoomModel } from '@/models';
 
 const getRoomList = async (req: Request, res: Response) => {
   const limit = parseInt(req.query.limit as string, 10) || 10;
@@ -42,12 +42,12 @@ const createRoom = async (req: AuthRequest, res: Response) => {
   const { room_name, password, max_participants } = req.body;
   const { userId } = req;
 
-  try {
-    if (!room_name || !password || !userId || !max_participants) {
-      res.status(400).json({ error: 'All fields are required' });
-      return;
-    }
+  if (!room_name || !password || !userId || !max_participants) {
+    res.status(400).json({ error: 'All fields are required' });
+    return;
+  }
 
+  try {
     const result = await RoomModel.createRoom({
       room_name,
       password,
@@ -61,4 +61,22 @@ const createRoom = async (req: AuthRequest, res: Response) => {
   }
 };
 
-export default { getRoomList, getSearchRoom, createRoom };
+const getParticipatedRoom = async (req: AuthRequest, res: Response) => {
+  const limit = parseInt(req.query.limit as string, 10) || 10;
+  const offset = parseInt(req.query.offset as string, 10) || 0;
+  const { userId } = req;
+
+  try {
+    const participateRoomList = await RoomModel.getParticipatedRoom({
+      userId: Number(userId),
+      limit,
+      offset,
+    });
+
+    res.json({ data: participateRoomList, message: 'success' });
+  } catch (error) {
+    res.status(500).json(`Internal Server Error: ${error}`);
+  }
+};
+
+export default { getRoomList, getSearchRoom, createRoom, getParticipatedRoom };

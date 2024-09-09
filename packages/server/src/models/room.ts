@@ -2,6 +2,7 @@ import { ResultSetHeader } from 'mysql2/promise';
 import bcrypt from 'bcrypt';
 import {
   CreateRoomServerRequest,
+  ParticipatedRoomServerRequest,
   RoomListRequest,
   SearchRoomRequest,
 } from 'common-types';
@@ -78,8 +79,31 @@ const createRoom = async ({
   }
 };
 
+const getParticipatedRoom = async ({
+  userId,
+  limit,
+  offset,
+}: ParticipatedRoomServerRequest) => {
+  const query = `
+    SELECT * FROM chat_rooms
+    WHERE owner_id = ?
+    ORDER BY created_at DESC
+    LIMIT ? OFFSET ?
+  `;
+
+  try {
+    const connection = await Connection();
+    const [rows] = await connection.query(query, [userId, limit, offset]);
+
+    return rows;
+  } catch (error) {
+    throw new Error(`DB Query Error: ${error}`);
+  }
+};
+
 export default {
   getRoomList,
   getSearchRoom,
   createRoom,
+  getParticipatedRoom,
 };
