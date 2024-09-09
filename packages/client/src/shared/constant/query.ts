@@ -1,4 +1,6 @@
+import { QueryClient } from '@tanstack/react-query';
 import {
+  CreateRoomClientRequest,
   KakaoLoginRequest,
   RoomListRequest,
   SearchRoomRequest,
@@ -9,7 +11,7 @@ import {
   postLogout,
   reissueToken,
 } from '@/entities/auth';
-import { getRoomList, getSearchRoom } from '@/entities/room';
+import { getRoomList, getSearchRoom, postRoom } from '@/entities/room';
 import { validateSearchKeyword } from '@/widgets/room/util';
 
 export const QUERY_KEY = {
@@ -67,7 +69,24 @@ export const MUTATE_OPTION = {
   KAKAO_LOGIN: ({ code }: KakaoLoginRequest) => ({
     mutationFn: () => postKakaoLogin({ code }),
   }),
-  LOGOUT: () => ({
+  LOGOUT: ({ queryClient }: { queryClient: QueryClient }) => ({
     mutationFn: postLogout,
+    onSuccess: () =>
+      queryClient.invalidateQueries({ queryKey: QUERY_KEY.AUTH }),
+  }),
+  CREATE_ROOM: ({ queryClient }: { queryClient: QueryClient }) => ({
+    mutationFn: (data: CreateRoomClientRequest) => postRoom(data),
+    onSuccess: (_: unknown, variables: CreateRoomClientRequest) => {
+      queryClient.invalidateQueries({
+        queryKey: QUERY_KEY.ROOM_LIST({ offset: 0, limit: 20 }),
+      });
+      queryClient.invalidateQueries({
+        queryKey: QUERY_KEY.SEARCH_ROOM({
+          keyword: variables.room_name,
+          offset: 0,
+          limit: 20,
+        }),
+      });
+    },
   }),
 };

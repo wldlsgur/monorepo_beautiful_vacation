@@ -1,4 +1,8 @@
-import { RoomListRequest, SearchRoomRequest } from 'common-types';
+import {
+  CreateRoomClientRequest,
+  RoomListRequest,
+  SearchRoomRequest,
+} from 'common-types';
 import { axiosInstance } from '@/shared/config';
 
 export const getRoomList = async ({ limit, offset }: RoomListRequest) => {
@@ -24,6 +28,12 @@ export const getSearchRoom = async ({
       offset,
     },
   });
+
+  return response.data;
+};
+
+export const postRoom = async (room: CreateRoomClientRequest) => {
+  const response = await axiosInstance.post('/api/v1/rooms', room);
 
   return response.data;
 };
