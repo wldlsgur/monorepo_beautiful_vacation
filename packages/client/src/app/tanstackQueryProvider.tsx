@@ -41,11 +41,25 @@ const TanstackQueryProvider = ({ children }: PropsWithChildren) => {
       },
     }),
     mutationCache: new MutationCache({
-      onError: async (error) => {
+      onError: async (error, variables, _, mutation) => {
         const { status } = error as unknown as AxiosError;
 
         if (status === 401) {
-          queryClient.invalidateQueries({ queryKey: QUERY_KEY.AUTH });
+          try {
+            await queryClient.fetchQuery(QUERY_OPTION.REISSUE_TOKEN());
+
+            if (mutation.options && mutation.options.mutationFn) {
+              const { mutationFn } = mutation.options;
+
+              await mutationFn(variables);
+            }
+          } catch {
+            if (pathname !== DOMAIN_URL.HOME) {
+              navigate(DOMAIN_URL.HOME);
+            }
+
+            queryClient.invalidateQueries({ queryKey: QUERY_KEY.AUTH });
+          }
         }
       },
     }),
