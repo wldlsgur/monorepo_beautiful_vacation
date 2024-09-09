@@ -11,7 +11,12 @@ export interface SearchRoomRequest {
   offset: number;
 }
 
-export type CreateRoomRequest = Pick<
+export type CreateRoomServerRequest = Pick<
   Room,
   'room_name' | 'password' | 'owner_id' | 'max_participants'
+>;
+
+export type CreateRoomClientRequest = Pick<
+  Room,
+  'room_name' | 'password' | 'max_participants'
 >;
