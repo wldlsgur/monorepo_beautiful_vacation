@@ -2,6 +2,7 @@ import { ResultSetHeader } from 'mysql2/promise';
 import bcrypt from 'bcrypt';
 import {
   CreateRoomServerRequest,
+  EnterTheRoomRequest,
   ParticipatedRoomServerRequest,
   RoomListRequest,
   SearchRoomRequest,
@@ -79,6 +80,27 @@ const createRoom = async ({
   }
 };
 
+const enterTheRoom = async ({ roomId, userId }: EnterTheRoomRequest) => {
+  const query = `
+    INSERT INTO chat_room_members (room_id, user_id)
+    VALUES (?, ?)
+  `;
+
+  try {
+    const connection = await Connection();
+    const [result] = await connection.query<ResultSetHeader>(query, [
+      roomId,
+      userId,
+    ]);
+
+    return {
+      memberId: result.insertId,
+    };
+  } catch (error) {
+    throw new Error(`DB Insert Error: ${error}`);
+  }
+};
+
 const getParticipatedRoom = async ({
   userId,
   limit,
@@ -106,4 +128,5 @@ export default {
   getSearchRoom,
   createRoom,
   getParticipatedRoom,
+  enterTheRoom,
 };

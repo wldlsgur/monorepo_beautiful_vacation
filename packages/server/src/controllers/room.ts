@@ -40,7 +40,7 @@ const getSearchRoom = async (req: Request, res: Response) => {
 
 const createRoom = async (req: AuthRequest, res: Response) => {
   const { room_name, password, max_participants } = req.body;
-  const { userId } = req;
+  const userId = Number(req.userId);
 
   if (!room_name || !password || !userId || !max_participants) {
     res.status(400).json({ error: 'All fields are required' });
@@ -48,14 +48,15 @@ const createRoom = async (req: AuthRequest, res: Response) => {
   }
 
   try {
-    const result = await RoomModel.createRoom({
+    const { roomId } = await RoomModel.createRoom({
       room_name,
       password,
-      owner_id: Number(userId),
+      owner_id: userId,
       max_participants,
     });
+    await RoomModel.enterTheRoom({ roomId, userId });
 
-    res.json({ data: result, message: 'success' });
+    res.json({ data: roomId, message: 'success' });
   } catch (error) {
     res.status(500).json(`Internal Server Error: ${error}`);
   }

@@ -20,3 +20,8 @@ export type CreateRoomClientRequest = Pick<
   Room,
   'room_name' | 'password' | 'max_participants'
 >;
+
+export interface EnterTheRoomRequest {
+  roomId: number;
+  userId: number;
+}
