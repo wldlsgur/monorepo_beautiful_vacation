@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { useTheme } from 'styled-components';
 import { QUERY_OPTION } from '@/shared/constant';
-import { RoomForm } from '@/widgets/room/ui';
+import { ParticipatedRoomList, RoomForm } from '@/widgets/room/ui';
 import { Profile } from '@/widgets/user/ui';
 import * as S from './style';
 
@@ -27,12 +27,12 @@ const HomeTap = () => {
       <S.HomeTapItem
         index={1}
         title='참여 방'
-        content='참여 방'
+        content={<ParticipatedRoomList />}
       />
       <S.HomeTapItem
         index={2}
         title='만든 방'
-        content='만든 방'
+        content={<ParticipatedRoomList />}
       />
       <S.HomeTapItem
         index={3}
