@@ -127,6 +127,13 @@ const reissueAccessToken = async (req: Request, res: Response) => {
     const { userId } = verifyToken({ token: refreshToken });
 
     if (!userId) {
+      res.clearCookie('refreshToken', {
+        httpOnly: true,
+        secure: CONFIG.NODE_ENV === 'production',
+        expires: new Date(0),
+        signed: true,
+      });
+
       res.status(401).json({ message: 'invalid refreshToken' });
       return;
     }
@@ -134,6 +141,13 @@ const reissueAccessToken = async (req: Request, res: Response) => {
     const storedToken = await redisClient.get(userId.toString());
 
     if (refreshToken !== storedToken) {
+      res.clearCookie('refreshToken', {
+        httpOnly: true,
+        secure: CONFIG.NODE_ENV === 'production',
+        expires: new Date(0),
+        signed: true,
+      });
+
       res.status(401).json({ message: 'invalid refreshToken' });
       return;
     }
