@@ -77,11 +77,11 @@ const createRoom = async (req: AuthRequest, res: Response) => {
 const getParticipatedRoom = async (req: AuthRequest, res: Response) => {
   const limit = parseInt(req.query.limit as string, 10) || 10;
   const offset = parseInt(req.query.offset as string, 10) || 0;
-  const { userId } = req;
+  const userId = Number(req.userId);
 
   try {
     const participateRoomList = await RoomModel.getParticipatedRoom({
-      userId: Number(userId),
+      userId,
       limit,
       offset,
     });
