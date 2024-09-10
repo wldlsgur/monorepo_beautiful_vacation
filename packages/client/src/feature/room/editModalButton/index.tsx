@@ -1,5 +1,6 @@
 import { Icon, useHover } from 'jiponent';
 import { useTheme } from 'styled-components';
+import { DOMAIN_URL } from '@/shared/constant';
 import * as S from './style';
 
 interface Props {
@@ -13,7 +14,7 @@ const EditModalButton = ({ roomId }: Props) => {
   return (
     <S.Linker
       ref={ref}
-      to={`/edit/room/${roomId}`}
+      to={DOMAIN_URL.ROOM_EDIT(roomId)}
     >
       <Icon
         name='edit'

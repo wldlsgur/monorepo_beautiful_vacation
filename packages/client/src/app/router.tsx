@@ -9,7 +9,7 @@ const Router = () => {
         element={<Pages.Home />}
       >
         <Route
-          path='edit/room/*'
+          path='room/edit/*'
           element={<Pages.EditRoom />}
         />
       </Route>
