@@ -49,9 +49,14 @@ const TanstackQueryProvider = ({ children }: PropsWithChildren) => {
             await queryClient.fetchQuery(QUERY_OPTION.REISSUE_TOKEN());
 
             if (mutation?.options?.mutationFn && variables) {
-              const { mutationFn } = mutation.options;
+              const { mutationFn, onSuccess } = mutation.options;
+              const { context, data } = mutation.state;
 
               await mutationFn(variables);
+
+              if (onSuccess) {
+                onSuccess(data, variables, context);
+              }
             }
           } catch {
             if (pathname !== DOMAIN_URL.HOME) {
