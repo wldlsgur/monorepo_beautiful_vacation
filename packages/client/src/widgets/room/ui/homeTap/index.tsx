@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { useTheme } from 'styled-components';
 import { QUERY_OPTION } from '@/shared/constant';
-import { ParticipatedRoomList, RoomForm } from '@/widgets/room/ui';
+import { ParticipatedRoomList, CreateRoomForm } from '@/widgets/room/ui';
 import { Profile } from '@/widgets/user/ui';
 import * as S from './style';
 
@@ -37,7 +37,7 @@ const HomeTap = () => {
       <S.HomeTapItem
         index={3}
         title='방 생성'
-        content={<RoomForm />}
+        content={<CreateRoomForm />}
       />
     </S.HomeTap>
   );

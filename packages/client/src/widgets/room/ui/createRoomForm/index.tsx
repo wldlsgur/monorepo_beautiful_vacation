@@ -6,7 +6,7 @@ import { LoginForm } from '@/widgets/auth/ui';
 import { ROOM_FORM_POST } from '@/widgets/room/constant';
 import * as S from './style';
 
-const RoomForm = () => {
+const CreateRoomForm = () => {
   const methods = useForm({ defaultValues: ROOM_FORM_POST.DEFAULT_VALUES });
   const { register, formState, setFocus } = methods;
   const { room_name, password, max_participants } = formState.errors;
@@ -61,4 +61,4 @@ const RoomForm = () => {
   );
 };
 
-export default withAuth(RoomForm, LoginForm);
+export default withAuth(CreateRoomForm, LoginForm);

@@ -1,6 +1,6 @@
 import { ForwardedRef, forwardRef } from 'react';
 import { Room } from 'common-types';
-import { DeleteRoomButton } from '@/feature/room';
+import { DeleteRoomButton, EditModalButton } from '@/feature/room';
 import * as S from './style';
 
 interface Props {
@@ -19,6 +19,7 @@ const ParticipatedRoomItem = forwardRef(
           {`${current_participants} / ${max_participants}`}
         </S.Participants>
         <DeleteRoomButton roomId={room_id} />
+        <EditModalButton roomId={room_id} />
       </S.RoomItem>
     );
   },
