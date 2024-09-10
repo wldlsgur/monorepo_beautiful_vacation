@@ -1,10 +1,12 @@
-import { ResultSetHeader } from 'mysql2/promise';
+import { ResultSetHeader, RowDataPacket } from 'mysql2/promise';
 import bcrypt from 'bcrypt';
 import {
-  CreateRoomServerRequest,
+  CreateRoomRequest,
+  DeleteRoomRequest,
   EnterTheRoomRequest,
-  ParticipatedRoomServerRequest,
+  ParticipatedRoomRequest,
   RoomListRequest,
+  RoomOwnerRequest,
   SearchRoomRequest,
 } from 'common-types';
 import { CONFIG, Connection } from '@/config';
@@ -53,7 +55,7 @@ const createRoom = async ({
   password,
   owner_id,
   max_participants,
-}: CreateRoomServerRequest) => {
+}: CreateRoomRequest) => {
   const query = `
     INSERT INTO chat_rooms (room_name, password, owner_id, max_participants, current_participants)
     VALUES (?, ?, ?, ?, 0)
@@ -105,7 +107,7 @@ const getParticipatedRoom = async ({
   userId,
   limit,
   offset,
-}: ParticipatedRoomServerRequest) => {
+}: ParticipatedRoomRequest) => {
   const query = `
     SELECT * FROM chat_rooms
     WHERE owner_id = ?
@@ -123,10 +125,49 @@ const getParticipatedRoom = async ({
   }
 };
 
+const deleteRoom = async ({ roomId }: DeleteRoomRequest) => {
+  const query = `
+    DELETE FROM chat_rooms
+    WHERE room_id = ?
+  `;
+
+  try {
+    const connection = await Connection();
+    const [result] = await connection.query(query, [roomId]);
+
+    return result;
+  } catch (error) {
+    throw new Error(`DB Query Error: ${error}`);
+  }
+};
+
+const getRoomOwner = async ({ roomId }: RoomOwnerRequest) => {
+  const query = `
+    SELECT owner_id FROM chat_rooms
+    WHERE room_id = ?
+    LIMIT 1
+  `;
+
+  try {
+    const connection = await Connection();
+    const [rows] = await connection.query<RowDataPacket[]>(query, [roomId]);
+
+    if (rows.length === 0) {
+      return null;
+    }
+
+    return rows[0].owner_id;
+  } catch (error) {
+    throw new Error(`DB Query Error: ${error}`);
+  }
+};
+
 export default {
   getRoomList,
   getSearchRoom,
   createRoom,
   getParticipatedRoom,
   enterTheRoom,
+  deleteRoom,
+  getRoomOwner,
 };

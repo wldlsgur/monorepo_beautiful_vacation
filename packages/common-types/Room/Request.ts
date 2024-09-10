@@ -11,17 +11,23 @@ export interface SearchRoomRequest {
   offset: number;
 }
 
-export type CreateRoomServerRequest = Pick<
+export type CreateRoomRequest = Omit<
   Room,
-  'room_name' | 'password' | 'owner_id' | 'max_participants'
->;
-
-export type CreateRoomClientRequest = Pick<
-  Room,
-  'room_name' | 'password' | 'max_participants'
->;
+  'room_id' | 'created_at' | 'updated_at' | 'current_participants'
+> & {
+  owner_id?: number;
+};
 
 export interface EnterTheRoomRequest {
   roomId: number;
   userId: number;
+}
+
+export interface DeleteRoomRequest {
+  userId?: number;
+  roomId: number;
+}
+
+export interface RoomOwnerRequest {
+  roomId: number;
 }

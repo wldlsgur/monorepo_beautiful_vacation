@@ -11,5 +11,10 @@ router.get(
   RoomController.getParticipatedRoom,
 );
 router.post('/', AuthController.authenticateToken, RoomController.createRoom);
+router.delete(
+  '/:roomId',
+  AuthController.authenticateToken,
+  RoomController.deleteRoom,
+);
 
 export default router;

@@ -1,6 +1,6 @@
 import {
-  CreateRoomClientRequest,
-  ParticipatedRoomClientRequest,
+  CreateRoomRequest,
+  ParticipatedRoomRequest,
   RoomListRequest,
   SearchRoomRequest,
 } from 'common-types';
@@ -36,7 +36,7 @@ export const getSearchRoom = async ({
 export const getParticipatedRoom = async ({
   limit,
   offset,
-}: ParticipatedRoomClientRequest) => {
+}: ParticipatedRoomRequest) => {
   const response = await axiosInstance.get('/api/v1/rooms/participated', {
     params: {
       limit,
@@ -47,8 +47,14 @@ export const getParticipatedRoom = async ({
   return response.data;
 };
 
-export const postRoom = async (room: CreateRoomClientRequest) => {
+export const postRoom = async (room: CreateRoomRequest) => {
   const response = await axiosInstance.post('/api/v1/rooms', room);
+
+  return response.data;
+};
+
+export const deleteRoom = async (roomId: number) => {
+  const response = await axiosInstance.delete(`/api/v1/rooms/${roomId}`);
 
   return response.data;
 };

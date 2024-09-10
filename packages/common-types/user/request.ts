@@ -1,8 +1,5 @@
-export interface ParticipatedRoomServerRequest {
-  userId: number;
+export interface ParticipatedRoomRequest {
+  userId?: number;
   limit: number;
   offset: number;
 }
-
-export interface ParticipatedRoomClientRequest
-  extends Omit<ParticipatedRoomServerRequest, 'userId'> {}

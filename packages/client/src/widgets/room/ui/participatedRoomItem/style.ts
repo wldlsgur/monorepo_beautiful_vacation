@@ -7,6 +7,7 @@ import {
 
 export const RoomItem = styled.li`
   ${roomItemStyle}
+  position: relative;
 `;
 
 export const RoomTitle = styled.h3`

@@ -1,5 +1,6 @@
 import { ForwardedRef, forwardRef } from 'react';
 import { Room } from 'common-types';
+import { DeleteRoomButton } from '@/feature/room';
 import * as S from './style';
 
 interface Props {
@@ -8,7 +9,8 @@ interface Props {
 
 const ParticipatedRoomItem = forwardRef(
   ({ roomData }: Props, ref: ForwardedRef<HTMLLIElement>) => {
-    const { room_name, current_participants, max_participants } = roomData;
+    const { room_id, room_name, current_participants, max_participants } =
+      roomData;
 
     return (
       <S.RoomItem ref={ref}>
@@ -16,6 +18,7 @@ const ParticipatedRoomItem = forwardRef(
         <S.Participants>
           {`${current_participants} / ${max_participants}`}
         </S.Participants>
+        <DeleteRoomButton roomId={room_id} />
       </S.RoomItem>
     );
   },

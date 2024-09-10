@@ -80,4 +80,33 @@ const getParticipatedRoom = async (req: AuthRequest, res: Response) => {
   }
 };
 
-export default { getRoomList, getSearchRoom, createRoom, getParticipatedRoom };
+const deleteRoom = async (req: AuthRequest, res: Response) => {
+  const roomId = Number(req.params.roomId);
+  const userId = Number(req.userId);
+
+  try {
+    const owner_id = await RoomModel.getRoomOwner({ roomId });
+
+    if (owner_id !== userId) {
+      res.status(403).json({ message: 'You are not the owner of this room' });
+      return;
+    }
+
+    const result = await RoomModel.deleteRoom({
+      userId: Number(userId),
+      roomId,
+    });
+
+    res.json({ data: result, message: 'success' });
+  } catch (error) {
+    res.status(500).json(`Internal Server Error: ${error}`);
+  }
+};
+
+export default {
+  getRoomList,
+  getSearchRoom,
+  createRoom,
+  getParticipatedRoom,
+  deleteRoom,
+};

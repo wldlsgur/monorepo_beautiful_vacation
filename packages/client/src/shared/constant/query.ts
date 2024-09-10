@@ -1,8 +1,8 @@
 import { QueryClient } from '@tanstack/react-query';
 import {
-  CreateRoomClientRequest,
+  CreateRoomRequest,
   KakaoLoginRequest,
-  ParticipatedRoomClientRequest,
+  ParticipatedRoomRequest,
   RoomListRequest,
   SearchRoomRequest,
 } from 'common-types';
@@ -13,6 +13,7 @@ import {
   reissueToken,
 } from '@/entities/auth';
 import {
+  deleteRoom,
   getParticipatedRoom,
   getRoomList,
   getSearchRoom,
@@ -35,7 +36,7 @@ export const QUERY_KEY = {
     offset,
     limit,
   ],
-  PARTICIPATE_ROOM: ({ offset, limit }: ParticipatedRoomClientRequest) => [
+  PARTICIPATE_ROOM: ({ offset, limit }: ParticipatedRoomRequest) => [
     'room',
     'participate',
     'list',
@@ -65,7 +66,7 @@ export const QUERY_OPTION = {
     gcTime: 5 * 60 * 1000,
     staleTime: 5 * 60 * 1000,
   }),
-  PARTICIPATE_ROOM: ({ offset, limit }: ParticipatedRoomClientRequest) => ({
+  PARTICIPATE_ROOM: ({ offset, limit }: ParticipatedRoomRequest) => ({
     queryKey: QUERY_KEY.PARTICIPATE_ROOM({ offset, limit }),
     queryFn: ({ pageParam }: any) =>
       getParticipatedRoom({ offset: pageParam, limit }),
@@ -97,16 +98,34 @@ export const MUTATE_OPTION = {
       queryClient.invalidateQueries({ queryKey: QUERY_KEY.AUTH }),
   }),
   CREATE_ROOM: ({ queryClient }: { queryClient: QueryClient }) => ({
-    mutationFn: (data: CreateRoomClientRequest) => postRoom(data),
-    onSuccess: (_: unknown, variables: CreateRoomClientRequest) => {
+    mutationFn: (data: CreateRoomRequest) => postRoom(data),
+    onSuccess: (_: unknown, { room_name }: CreateRoomRequest) => {
+      const [offset, limit] = [0, 20];
+
       queryClient.invalidateQueries({
-        queryKey: QUERY_KEY.ROOM_LIST({ offset: 0, limit: 20 }),
+        queryKey: QUERY_KEY.ROOM_LIST({ offset, limit }),
       });
       queryClient.invalidateQueries({
         queryKey: QUERY_KEY.SEARCH_ROOM({
-          keyword: variables.room_name,
-          offset: 0,
-          limit: 20,
+          keyword: room_name,
+          offset,
+          limit,
+        }),
+      });
+    },
+  }),
+  DELETE_ROOM: ({ queryClient }: { queryClient: QueryClient }) => ({
+    mutationFn: (roomId: number) => deleteRoom(roomId),
+    onSuccess: () => {
+      const [offset, limit] = [0, 20];
+
+      queryClient.invalidateQueries({
+        queryKey: QUERY_KEY.ROOM_LIST({ offset, limit }),
+      });
+      queryClient.invalidateQueries({
+        queryKey: QUERY_KEY.PARTICIPATE_ROOM({
+          offset,
+          limit,
         }),
       });
     },
