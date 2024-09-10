@@ -8,7 +8,10 @@ export const Form = styled.form`
   justify-content: center;
   align-items: center;
   gap: 5rem;
-  padding: 0 1rem;
+  padding: 2rem;
+  border-radius: 1rem;
+
+  background-color: ${({ theme }) => theme.colors.primaryReverse};
 `;
 
 export const OauthLink = styled(Link)`
