@@ -73,6 +73,8 @@ export const QUERY_OPTION = {
     initialPageParam: offset,
     getNextPageParam: (lastPage: any, allPages: any) =>
       lastPage.data.length < limit ? null : allPages.length * limit,
+    gcTime: Infinity,
+    staleTime: Infinity,
   }),
   AUTH: () => ({
     queryKey: QUERY_KEY.AUTH,
