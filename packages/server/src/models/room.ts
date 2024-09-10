@@ -7,9 +7,26 @@ import {
   ParticipatedRoomRequest,
   RoomListRequest,
   RoomOwnerRequest,
+  RoomRequest,
   SearchRoomRequest,
 } from 'common-types';
 import { CONFIG, Connection } from '@/config';
+
+const getRoom = async ({ roomId }: RoomRequest) => {
+  const query = `
+    SELECT room_id, room_name, owner_id, max_participants FROM chat_rooms
+    WHERE room_id = ?
+  `;
+
+  try {
+    const connection = await Connection();
+    const [rows] = await connection.query<RowDataPacket[]>(query, [roomId]);
+
+    return rows[0];
+  } catch (error) {
+    throw new Error(`DB Query Error: ${error}`);
+  }
+};
 
 const getRoomList = async ({ limit, offset }: RoomListRequest) => {
   const query = `
@@ -170,4 +187,5 @@ export default {
   enterTheRoom,
   deleteRoom,
   getRoomOwner,
+  getRoom,
 };

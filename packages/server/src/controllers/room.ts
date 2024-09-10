@@ -2,6 +2,18 @@ import { Request, Response } from 'express';
 import { AuthRequest } from '@/type';
 import { RoomModel } from '@/models';
 
+const getRoom = async (req: Request, res: Response) => {
+  const roomId = Number(req.params.roomId);
+
+  try {
+    const room = await RoomModel.getRoom({ roomId });
+
+    res.json({ data: room, message: 'success' });
+  } catch (error) {
+    res.status(500).json(`Internal Server Error: ${error}`);
+  }
+};
+
 const getRoomList = async (req: Request, res: Response) => {
   const limit = parseInt(req.query.limit as string, 10) || 10;
   const offset = parseInt(req.query.offset as string, 10) || 0;
@@ -104,6 +116,7 @@ const deleteRoom = async (req: AuthRequest, res: Response) => {
 };
 
 export default {
+  getRoom,
   getRoomList,
   getSearchRoom,
   createRoom,

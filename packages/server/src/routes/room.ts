@@ -4,6 +4,7 @@ import { AuthController, RoomController } from '@/controllers';
 const router = express.Router();
 
 router.get('/', RoomController.getRoomList);
+router.get('/:roomId', RoomController.getRoom);
 router.get('/search', RoomController.getSearchRoom);
 router.get(
   '/participated',

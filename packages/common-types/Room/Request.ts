@@ -31,3 +31,7 @@ export interface DeleteRoomRequest {
 export interface RoomOwnerRequest {
   roomId: number;
 }
+
+export interface RoomRequest {
+  roomId: number;
+}
