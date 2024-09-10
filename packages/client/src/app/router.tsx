@@ -7,7 +7,12 @@ const Router = () => {
       <Route
         path='/'
         element={<Pages.Home />}
-      />
+      >
+        <Route
+          path='edit/room/*'
+          element={<Pages.EditRoom />}
+        />
+      </Route>
       <Route
         path='/auth/kakao'
         element={<Pages.AuthKakao />}

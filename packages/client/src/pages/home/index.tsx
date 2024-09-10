@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { Outlet } from 'react-router-dom';
 import { SearchBar } from '@/feature/room';
 import { useRoomListData } from '@/widgets/room/hook';
 import { Header, HomeTap, RoomList } from '@/widgets/room/ui';
@@ -25,6 +26,7 @@ const Home = () => {
       <S.Sidebar>
         <HomeTap />
       </S.Sidebar>
+      <Outlet />
     </S.Wrapper>
   );
 };
