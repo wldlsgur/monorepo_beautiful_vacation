@@ -1,9 +1,9 @@
 import { useEffect } from 'react';
 import { useForm, FormProvider } from 'react-hook-form';
+import { CreateRoomButton } from '@/feature/room';
 import { withAuth } from '@/shared/hoc';
 import { LoginForm } from '@/widgets/auth/ui';
 import { ROOM_FORM_POST } from '@/widgets/room/constant';
-import CreateRoomButton from '../createRoomButton';
 import * as S from './style';
 
 const RoomForm = () => {

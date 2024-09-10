@@ -1,7 +1,8 @@
 import { User } from 'common-types';
 import { Avatar } from 'jiponent';
+import { LogoutButton } from '@/feature/auth';
 import { withAuth } from '@/shared/hoc';
-import { LoginForm, LogoutButton } from '@/widgets/auth/ui';
+import { LoginForm } from '@/widgets/auth/ui';
 import * as S from './style';
 
 interface Props {

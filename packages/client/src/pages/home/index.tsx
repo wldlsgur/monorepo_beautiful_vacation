@@ -1,6 +1,7 @@
 import { useState } from 'react';
+import { SearchBar } from '@/feature/room';
 import { useRoomListData } from '@/widgets/room/hook';
-import { Header, HomeTap, RoomList, SearchBar } from '@/widgets/room/ui';
+import { Header, HomeTap, RoomList } from '@/widgets/room/ui';
 import * as S from './style';
 
 const Home = () => {
