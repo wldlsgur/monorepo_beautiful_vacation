@@ -3,11 +3,11 @@ import { useForm, FormProvider } from 'react-hook-form';
 import { CreateRoomButton } from '@/feature/room';
 import { withAuth } from '@/shared/hoc';
 import { LoginForm } from '@/widgets/auth/ui';
-import { ROOM_FORM_POST } from '@/widgets/room/constant';
+import { ROOM_FORM } from '@/widgets/room/constant';
 import * as S from './style';
 
 const CreateRoomForm = () => {
-  const methods = useForm({ defaultValues: ROOM_FORM_POST.DEFAULT_VALUES });
+  const methods = useForm({ defaultValues: ROOM_FORM.DEFAULT_VALUES });
   const { register, formState, setFocus } = methods;
   const { room_name, password, max_participants } = formState.errors;
 
@@ -22,10 +22,7 @@ const CreateRoomForm = () => {
           <S.Label>제목</S.Label>
           <S.Text
             autoComplete='organization'
-            {...register(
-              'room_name',
-              ROOM_FORM_POST.VALIDATION_RULES.ROOM_NAME,
-            )}
+            {...register('room_name', ROOM_FORM.VALIDATION_RULES.ROOM_NAME)}
           />
           <S.ErrorMessage visible={!!room_name}>
             {room_name?.message}
@@ -36,7 +33,7 @@ const CreateRoomForm = () => {
           <S.Text
             type='password'
             autoComplete='new-password'
-            {...register('password', ROOM_FORM_POST.VALIDATION_RULES.PASSWORD)}
+            {...register('password', ROOM_FORM.VALIDATION_RULES.PASSWORD)}
           />
           <S.ErrorMessage visible={!!password}>
             {password?.message}
@@ -48,7 +45,7 @@ const CreateRoomForm = () => {
             type='number'
             {...register(
               'max_participants',
-              ROOM_FORM_POST.VALIDATION_RULES.MAX_PARTICIPANTS,
+              ROOM_FORM.VALIDATION_RULES.MAX_PARTICIPANTS,
             )}
           />
           <S.ErrorMessage visible={!!max_participants}>

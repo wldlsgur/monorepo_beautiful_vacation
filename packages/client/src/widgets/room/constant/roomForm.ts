@@ -1,9 +1,20 @@
-export const ROOM_FORM_POST = {
+import { CreateRoomRequest } from 'common-types';
+
+export const ROOM_FORM = {
   DEFAULT_VALUES: {
     room_name: '',
     password: '',
     max_participants: 0,
   },
+  DYNAMIC_DEFAULT_VALUES: ({
+    room_name,
+    password,
+    max_participants,
+  }: CreateRoomRequest) => ({
+    room_name,
+    password,
+    max_participants,
+  }),
   VALIDATION_RULES: {
     ROOM_NAME: {
       required: '제목은 필수 입력 항목입니다.',
