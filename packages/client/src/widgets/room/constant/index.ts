@@ -1,1 +1,1 @@
-export * from './roomFormPost';
+export * from './roomForm';
