@@ -1,4 +1,4 @@
-import { PropsWithChildren } from 'react';
+import { PropsWithChildren, useState } from 'react';
 import {
   MutationCache,
   QueryCache,
@@ -16,71 +16,76 @@ const TanstackQueryProvider = ({ children }: PropsWithChildren) => {
   const navigate = useNavigate();
   const { pathname } = useLocation();
 
-  const queryClient = new QueryClient({
-    queryCache: new QueryCache({
-      onError: async (error, { queryKey }) => {
-        const { status } = error as unknown as AxiosError;
+  const [queryClient] = useState(
+    () =>
+      new QueryClient({
+        queryCache: new QueryCache({
+          onError: async (error, { queryKey }) => {
+            const { status } = error as unknown as AxiosError;
 
-        if (status === 401 && queryKey !== QUERY_KEY.REISSUE_TOKEN) {
-          try {
-            await queryClient.fetchQuery(QUERY_OPTION.REISSUE_TOKEN());
+            if (status === 401 && queryKey !== QUERY_KEY.REISSUE_TOKEN) {
+              try {
+                await queryClient.fetchQuery(QUERY_OPTION.REISSUE_TOKEN());
 
-            if (queryKey === QUERY_KEY.AUTH) {
-              queryClient.invalidateQueries({ queryKey });
-            }
-          } catch {
-            if (pathname !== DOMAIN_URL.HOME) {
-              navigate(DOMAIN_URL.HOME);
-            }
+                if (queryKey === QUERY_KEY.AUTH) {
+                  queryClient.invalidateQueries({ queryKey });
+                }
+              } catch {
+                if (pathname !== DOMAIN_URL.HOME) {
+                  navigate(DOMAIN_URL.HOME);
+                }
 
-            if (queryKey !== QUERY_KEY.AUTH) {
-              queryClient.invalidateQueries({ queryKey });
-            }
-          }
-        }
-      },
-    }),
-    mutationCache: new MutationCache({
-      onError: async (error, variables, _, mutation) => {
-        const { status } = error as unknown as AxiosError;
-
-        if (status === 401) {
-          try {
-            await queryClient.fetchQuery(QUERY_OPTION.REISSUE_TOKEN());
-
-            if (mutation?.options?.mutationFn && variables) {
-              const { mutationFn, onSuccess } = mutation.options;
-              const { context, data } = mutation.state;
-
-              await mutationFn(variables);
-
-              if (onSuccess) {
-                onSuccess(data, variables, context);
+                if (queryKey !== QUERY_KEY.AUTH) {
+                  queryClient.invalidateQueries({ queryKey });
+                }
               }
             }
-          } catch {
-            if (pathname !== DOMAIN_URL.HOME) {
-              navigate(DOMAIN_URL.HOME);
-            }
+          },
+        }),
+        mutationCache: new MutationCache({
+          onError: async (error, variables, _, mutation) => {
+            const { status } = error as unknown as AxiosError;
 
-            queryClient.invalidateQueries({ queryKey: QUERY_KEY.AUTH });
-          }
-        }
-      },
-    }),
-    defaultOptions: {
-      queries: {
-        staleTime: 0,
-        gcTime: 0,
-        retry: false,
-        refetchOnWindowFocus: false,
-        retryOnMount: false,
-      },
-      mutations: {
-        retry: false,
-      },
-    },
-  });
+            if (status === 401) {
+              try {
+                await queryClient.fetchQuery(QUERY_OPTION.REISSUE_TOKEN());
+
+                if (mutation?.options?.mutationFn && variables) {
+                  const { mutationFn, onSuccess } = mutation.options;
+                  const { context, data } = mutation.state;
+
+                  await mutationFn(variables);
+
+                  if (onSuccess) {
+                    onSuccess(data, variables, context);
+                  }
+                }
+              } catch {
+                if (pathname !== DOMAIN_URL.HOME) {
+                  navigate(DOMAIN_URL.HOME);
+                }
+
+                queryClient.invalidateQueries({ queryKey: QUERY_KEY.AUTH });
+              }
+            }
+          },
+        }),
+        defaultOptions: {
+          queries: {
+            staleTime: 0,
+            gcTime: 0,
+            retry: false,
+            refetchOnWindowFocus: false,
+            retryOnMount: false,
+            refetchOnMount: false,
+            refetchInterval: false,
+          },
+          mutations: {
+            retry: false,
+          },
+        },
+      }),
+  );
 
   return (
     <QueryClientProvider client={queryClient}>
