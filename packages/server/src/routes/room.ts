@@ -1,5 +1,10 @@
 import express from 'express';
-import { AuthController, RoomController } from '@/controllers';
+import { RoomController } from '@/controllers';
+import {
+  authenticateToken,
+  validateRequest,
+  validateRoom,
+} from '@/middlewares';
 
 const router = express.Router();
 
@@ -7,14 +12,17 @@ router.get('/', RoomController.getRoomList);
 router.get('/search', RoomController.getSearchRoom);
 router.get(
   '/participated',
-  AuthController.authenticateToken,
+  authenticateToken,
   RoomController.getParticipatedRoom,
 );
-router.post('/', AuthController.authenticateToken, RoomController.createRoom);
-router.delete(
+router.post('/', authenticateToken, RoomController.createRoom);
+router.delete('/:roomId', authenticateToken, RoomController.deleteRoom);
+router.patch(
   '/:roomId',
-  AuthController.authenticateToken,
-  RoomController.deleteRoom,
+  authenticateToken,
+  validateRoom.patchRoom,
+  validateRequest,
+  RoomController.patchRoom,
 );
 router.get('/:roomId', RoomController.getRoom);
 
