@@ -1,4 +1,4 @@
-import { CreateRoomRequest } from 'common-types';
+import { RoomResponse } from 'common-types';
 
 export const ROOM_FORM = {
   DEFAULT_VALUES: {
@@ -8,11 +8,10 @@ export const ROOM_FORM = {
   },
   DYNAMIC_DEFAULT_VALUES: ({
     room_name,
-    password,
     max_participants,
-  }: CreateRoomRequest) => ({
+  }: RoomResponse['data']) => ({
     room_name,
-    password,
+    password: '',
     max_participants,
   }),
   VALIDATION_RULES: {
