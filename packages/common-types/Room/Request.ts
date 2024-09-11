@@ -35,3 +35,8 @@ export interface RoomOwnerRequest {
 export interface RoomRequest {
   roomId: number;
 }
+
+export type PatchRoomRequest = Pick<
+  Room,
+  'room_id' | 'room_name' | 'password' | 'max_participants'
+>;
