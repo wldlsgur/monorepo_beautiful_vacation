@@ -2066,7 +2066,7 @@ __metadata:
     eslint-plugin-react-hooks: "npm:4.3.0"
     eslint-plugin-react-refresh: "npm:0.4.9"
     framer-motion: "npm:11.3.30"
-    jiponent: "npm:1.10.1"
+    jiponent: "npm:^1.10.3"
     lodash: "npm:4.17.21"
     prettier: "npm:3.3.3"
     react: "npm:18.3.1"
@@ -3230,6 +3230,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"express-validator@npm:^7.2.0":
+  version: 7.2.0
+  resolution: "express-validator@npm:7.2.0"
+  dependencies:
+    lodash: "npm:^4.17.21"
+    validator: "npm:~13.12.0"
+  checksum: 10c0/3197fdbe5e2f574432d11f5e2c7a367ef6473534c158f96d849a2426130d835076c3dd87d11483fe1932001e188eabac3aa9b0485c7944cf12fea10fc31cde3d
+  languageName: node
+  linkType: hard
+
 "express@npm:4.19.2":
   version: 4.19.2
   resolution: "express@npm:4.19.2"
@@ -4324,9 +4334,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"jiponent@npm:1.10.1":
-  version: 1.10.1
-  resolution: "jiponent@npm:1.10.1"
+"jiponent@npm:^1.10.3":
+  version: 1.10.3
+  resolution: "jiponent@npm:1.10.3"
   dependencies:
     buffer: "npm:^6.0.3"
     feather-icons: "npm:^4.29.2"
@@ -4334,7 +4344,7 @@ __metadata:
   peerDependencies:
     react: ^18.0
     react-dom: ^18.0
-  checksum: 10c0/ee8e65ebfde23049e67313a59adfabeb33559564e03584b76b56af2128fed88609ab735b2980550f97d7668902afd4b12cdc1f3d72c518caf01f181a1a31ff2b
+  checksum: 10c0/54cc48b80317f2f3abfd7191aa7e0edbfdadb0bfaf38b8d2d13e1d052c9f070679f4674a2c313ef4e35f1d633546c86187cfdfbec008448e9da64802b8c6acb0
   languageName: node
   linkType: hard
 
@@ -4619,7 +4629,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"lodash@npm:4.17.21":
+"lodash@npm:4.17.21, lodash@npm:^4.17.21":
   version: 4.17.21
   resolution: "lodash@npm:4.17.21"
   checksum: 10c0/d8cbea072bb08655bb4c989da418994b073a608dffa608b09ac04b43a791b12aeae7cd7ad919aa4c925f33b48490b5cfe6c1f71d827956071dae2e7bb3a6b74c
@@ -6080,6 +6090,7 @@ __metadata:
     eslint-config-prettier: "npm:9.1.0"
     eslint-plugin-prettier: "npm:5.2.1"
     express: "npm:4.19.2"
+    express-validator: "npm:^7.2.0"
     ioredis: "npm:5.4.1"
     jsonwebtoken: "npm:9.0.2"
     mysql2: "npm:3.11.0"
@@ -6932,6 +6943,13 @@ __metadata:
   version: 3.0.1
   resolution: "v8-compile-cache-lib@npm:3.0.1"
   checksum: 10c0/bdc36fb8095d3b41df197f5fb6f11e3a26adf4059df3213e3baa93810d8f0cc76f9a74aaefc18b73e91fe7e19154ed6f134eda6fded2e0f1c8d2272ed2d2d391
+  languageName: node
+  linkType: hard
+
+"validator@npm:~13.12.0":
+  version: 13.12.0
+  resolution: "validator@npm:13.12.0"
+  checksum: 10c0/21d48a7947c9e8498790550f56cd7971e0e3d724c73388226b109c1bac2728f4f88caddfc2f7ed4b076f9b0d004316263ac786a17e9c4edf075741200718cd32
   languageName: node
   linkType: hard
 
