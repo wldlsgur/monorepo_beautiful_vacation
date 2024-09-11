@@ -3,9 +3,12 @@ import {
   CreateRoomRequest,
   KakaoLoginRequest,
   ParticipatedRoomRequest,
+  PatchRoomRequest,
   RoomListRequest,
+  RoomRequest,
   SearchRoomRequest,
 } from 'common-types';
+import { NavigateFunction } from 'react-router-dom';
 import {
   checkAuth,
   postKakaoLogin,
@@ -15,13 +18,17 @@ import {
 import {
   deleteRoom,
   getParticipatedRoom,
+  getRoom,
   getRoomList,
   getSearchRoom,
+  patchRoom,
   postRoom,
 } from '@/entities/room';
 import { validateSearchKeyword } from '@/widgets/room/util';
+import DOMAIN_URL from './domainUrl';
 
 export const QUERY_KEY = {
+  ROOM: ({ roomId }: RoomRequest) => ['room', roomId],
   ROOM_LIST: ({ offset, limit }: RoomListRequest) => [
     'room',
     'list',
@@ -48,6 +55,12 @@ export const QUERY_KEY = {
 };
 
 export const QUERY_OPTION = {
+  ROOM: ({ roomId }: RoomRequest) => ({
+    queryKey: QUERY_KEY.ROOM({ roomId }),
+    queryFn: () => getRoom(roomId),
+    gcTime: 0,
+    staleTime: 0,
+  }),
   ROOM_LIST: ({ offset, limit }: RoomListRequest) => ({
     queryKey: QUERY_KEY.ROOM_LIST({ offset, limit }),
     queryFn: ({ pageParam }: any) => getRoomList({ offset: pageParam, limit }),
@@ -130,6 +143,37 @@ export const MUTATE_OPTION = {
           limit,
         }),
       });
+    },
+  }),
+  PATCH_ROOM: ({
+    queryClient,
+    navigate,
+  }: {
+    queryClient: QueryClient;
+    navigate: NavigateFunction;
+  }) => ({
+    mutationFn: (room: PatchRoomRequest) => patchRoom(room),
+    onSuccess: (_: unknown, { room_name }: PatchRoomRequest) => {
+      const [offset, limit] = [0, 20];
+
+      queryClient.invalidateQueries({
+        queryKey: QUERY_KEY.ROOM_LIST({ offset, limit }),
+      });
+      queryClient.invalidateQueries({
+        queryKey: QUERY_KEY.PARTICIPATE_ROOM({
+          offset,
+          limit,
+        }),
+      });
+      queryClient.invalidateQueries({
+        queryKey: QUERY_KEY.SEARCH_ROOM({
+          keyword: room_name,
+          offset,
+          limit,
+        }),
+      });
+
+      navigate(DOMAIN_URL.HOME);
     },
   }),
 };

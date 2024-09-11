@@ -1,6 +1,7 @@
 import {
   CreateRoomRequest,
   ParticipatedRoomRequest,
+  PatchRoomRequest,
   RoomListRequest,
   SearchRoomRequest,
 } from 'common-types';
@@ -55,6 +56,27 @@ export const postRoom = async (room: CreateRoomRequest) => {
 
 export const deleteRoom = async (roomId: number) => {
   const response = await axiosInstance.delete(`/api/v1/rooms/${roomId}`);
+
+  return response.data;
+};
+
+export const getRoom = async (roomId: number) => {
+  const response = await axiosInstance.get(`/api/v1/rooms/${roomId}`);
+
+  return response.data;
+};
+
+export const patchRoom = async ({
+  room_id,
+  room_name,
+  password,
+  max_participants,
+}: PatchRoomRequest) => {
+  const response = await axiosInstance.patch(`/api/v1/rooms/${room_id}`, {
+    room_name,
+    password,
+    max_participants,
+  });
 
   return response.data;
 };
