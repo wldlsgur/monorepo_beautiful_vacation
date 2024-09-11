@@ -1,16 +1,16 @@
 import { ResultSetHeader, RowDataPacket } from 'mysql2/promise';
-import bcrypt from 'bcrypt';
 import {
   CreateRoomRequest,
   DeleteRoomRequest,
   EnterTheRoomRequest,
   ParticipatedRoomRequest,
+  PatchRoomRequest,
   RoomListRequest,
   RoomOwnerRequest,
   RoomRequest,
   SearchRoomRequest,
 } from 'common-types';
-import { CONFIG, Connection } from '@/config';
+import { Connection } from '@/config';
 
 const getRoom = async ({ roomId }: RoomRequest) => {
   const query = `
@@ -77,16 +77,12 @@ const createRoom = async ({
     INSERT INTO chat_rooms (room_name, password, owner_id, max_participants, current_participants)
     VALUES (?, ?, ?, ?, 0)
   `;
-  const hashedPassword = await bcrypt.hash(
-    password,
-    Number(CONFIG.BCRYPT_SALT_ROUNDS),
-  );
 
   try {
     const connection = await Connection();
     const [result] = await connection.query<ResultSetHeader>(query, [
       room_name,
-      hashedPassword,
+      password,
       owner_id,
       max_participants,
     ]);
@@ -179,6 +175,36 @@ const getRoomOwner = async ({ roomId }: RoomOwnerRequest) => {
   }
 };
 
+const patchRoom = async ({
+  room_id,
+  room_name,
+  password,
+  max_participants,
+}: PatchRoomRequest) => {
+  const query = `
+    UPDATE chat_rooms
+    SET
+      room_name = ?,
+      password = ?,
+      max_participants = ?
+    WHERE room_id = ?
+  `;
+
+  try {
+    const connection = await Connection();
+    const [result] = await connection.query(query, [
+      room_name,
+      password,
+      max_participants,
+      room_id,
+    ]);
+
+    return result;
+  } catch (error) {
+    throw new Error(`DB Query Error: ${error}`);
+  }
+};
+
 export default {
   getRoomList,
   getSearchRoom,
@@ -188,4 +214,5 @@ export default {
   deleteRoom,
   getRoomOwner,
   getRoom,
+  patchRoom,
 };

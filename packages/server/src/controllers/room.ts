@@ -1,6 +1,8 @@
 import { Request, Response } from 'express';
+import bcrypt from 'bcrypt';
 import { AuthRequest } from '@/type';
 import { RoomModel } from '@/models';
+import { CONFIG } from '@/config';
 
 const getRoom = async (req: Request, res: Response) => {
   const roomId = Number(req.params.roomId);
@@ -60,9 +62,14 @@ const createRoom = async (req: AuthRequest, res: Response) => {
   }
 
   try {
+    const hashedPassword = await bcrypt.hash(
+      password,
+      Number(CONFIG.BCRYPT_SALT_ROUNDS),
+    );
+
     const { roomId } = await RoomModel.createRoom({
       room_name,
-      password,
+      password: hashedPassword,
       owner_id: userId,
       max_participants,
     });
@@ -115,6 +122,29 @@ const deleteRoom = async (req: AuthRequest, res: Response) => {
   }
 };
 
+const patchRoom = async (req: AuthRequest, res: Response) => {
+  const roomId = Number(req.params.roomId);
+  const { room_name, password, max_participants } = req.body;
+
+  try {
+    const hashedPassword = await bcrypt.hash(
+      password,
+      Number(CONFIG.BCRYPT_SALT_ROUNDS),
+    );
+
+    const result = await RoomModel.patchRoom({
+      room_id: roomId,
+      room_name,
+      password: hashedPassword,
+      max_participants,
+    });
+
+    res.json({ data: result, message: 'success' });
+  } catch (error) {
+    res.status(500).json(`Internal Server Error: ${error}`);
+  }
+};
+
 export default {
   getRoom,
   getRoomList,
@@ -122,4 +152,5 @@ export default {
   createRoom,
   getParticipatedRoom,
   deleteRoom,
+  patchRoom,
 };
