@@ -7,7 +7,16 @@ const authenticateToken = (
   res: Response,
   next: NextFunction,
 ) => {
-  const { accessToken } = req.signedCookies;
+  const { accessToken, refreshToken } = req.signedCookies;
+
+  if (req.originalUrl === '/api/v1/auth' && !accessToken && !refreshToken) {
+    res.status(200).json({
+      data: null,
+      message:
+        'Authentication failed. Both access token and refresh token are missing.',
+    });
+    return;
+  }
 
   if (!accessToken) {
     res.status(401).json({ message: 'accessToken is missing' });

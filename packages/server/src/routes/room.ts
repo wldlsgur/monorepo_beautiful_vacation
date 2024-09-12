@@ -8,15 +8,39 @@ import {
 
 const router = express.Router();
 
-router.get('/', RoomController.getRoomList);
-router.get('/search', RoomController.getSearchRoom);
+router.get(
+  '/',
+  validateRoom.getRoomList,
+  validateRequest,
+  RoomController.getRoomList,
+);
+router.get(
+  '/search',
+  validateRoom.getSearchRoom,
+  validateRequest,
+  RoomController.getSearchRoom,
+);
 router.get(
   '/participated',
   authenticateToken,
+  validateRoom.getRoomList,
+  validateRequest,
   RoomController.getParticipatedRoom,
 );
-router.post('/', authenticateToken, RoomController.createRoom);
-router.delete('/:roomId', authenticateToken, RoomController.deleteRoom);
+router.post(
+  '/',
+  authenticateToken,
+  validateRoom.createRoom,
+  validateRequest,
+  RoomController.createRoom,
+);
+router.delete(
+  '/:roomId',
+  authenticateToken,
+  validateRoom.deleteRoom,
+  validateRequest,
+  RoomController.deleteRoom,
+);
 router.patch(
   '/:roomId',
   authenticateToken,
@@ -24,6 +48,11 @@ router.patch(
   validateRequest,
   RoomController.patchRoom,
 );
-router.get('/:roomId', RoomController.getRoom);
+router.get(
+  '/:roomId',
+  validateRoom.getRoom,
+  validateRequest,
+  RoomController.getRoom,
+);
 
 export default router;

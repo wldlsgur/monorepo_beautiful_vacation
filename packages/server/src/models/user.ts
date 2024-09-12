@@ -19,7 +19,7 @@ const getUserByKakaoId = async ({ kakaoId }: { kakaoId: string }) => {
   }
 };
 
-const getUserByUserId = async ({ userId }: { userId: string }) => {
+const getUserByUserId = async ({ userId }: { userId: number }) => {
   const query = 'SELECT * FROM users WHERE user_id = ?';
 
   try {

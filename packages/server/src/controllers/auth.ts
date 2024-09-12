@@ -34,6 +34,7 @@ const kakaoLogin = async (req: Request, res: Response) => {
 
       user = await UsersModel.getUserByKakaoId({ kakaoId: id });
     }
+
     const accessToken = signAccessToken({ userId: user?.user_id });
     const refreshToken = signRefreshToken({ userId: user?.user_id });
 
@@ -59,12 +60,7 @@ const kakaoLogin = async (req: Request, res: Response) => {
 };
 
 const checkAuth = async (req: AuthRequest, res: Response) => {
-  const { userId } = req;
-
-  if (!userId) {
-    res.status(401).json({ data: null, message: 'invalid accessToken' });
-    return;
-  }
+  const userId = Number(req.userId);
 
   try {
     const user = await UsersModel.getUserByUserId({ userId });
@@ -77,12 +73,7 @@ const checkAuth = async (req: AuthRequest, res: Response) => {
 
 const logout = async (req: AuthRequest, res: Response) => {
   const { accessToken, refreshToken } = req.signedCookies;
-  const { userId } = req;
-
-  if (!userId) {
-    res.status(401).json({ data: null, message: 'invalid accessToken' });
-    return;
-  }
+  const userId = req.userId as string;
 
   try {
     const hasToken = await redisClient.exists(userId);
@@ -117,11 +108,6 @@ const logout = async (req: AuthRequest, res: Response) => {
 
 const reissueAccessToken = async (req: Request, res: Response) => {
   const { refreshToken } = req.signedCookies;
-
-  if (!refreshToken) {
-    res.status(401).json({ message: 'refreshToken is missing' });
-    return;
-  }
 
   try {
     const { userId } = verifyToken({ token: refreshToken });

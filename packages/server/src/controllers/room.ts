@@ -17,8 +17,8 @@ const getRoom = async (req: Request, res: Response) => {
 };
 
 const getRoomList = async (req: Request, res: Response) => {
-  const limit = parseInt(req.query.limit as string, 10) || 10;
-  const offset = parseInt(req.query.offset as string, 10) || 0;
+  const limit = Number(req.query.limit);
+  const offset = Number(req.query.offset);
 
   try {
     const roomList = await RoomModel.getRoomList({ limit, offset });
@@ -30,14 +30,9 @@ const getRoomList = async (req: Request, res: Response) => {
 };
 
 const getSearchRoom = async (req: Request, res: Response) => {
-  const keyword = (req.query.keyword as string) || '';
-  const limit = parseInt(req.query.limit as string, 10) || 10;
-  const offset = parseInt(req.query.offset as string, 10) || 0;
-
-  if (!keyword) {
-    res.json({ data: [], message: 'success' });
-    return;
-  }
+  const keyword = String(req.query.keyword);
+  const limit = Number(req.query.limit);
+  const offset = Number(req.query.offset);
 
   try {
     const searchRoom = await RoomModel.getSearchRoom({
@@ -55,11 +50,6 @@ const getSearchRoom = async (req: Request, res: Response) => {
 const createRoom = async (req: AuthRequest, res: Response) => {
   const { room_name, password, max_participants } = req.body;
   const userId = Number(req.userId);
-
-  if (!room_name || !password || !userId || !max_participants) {
-    res.status(400).json({ error: 'All fields are required' });
-    return;
-  }
 
   try {
     const hashedPassword = await bcrypt.hash(
@@ -82,8 +72,8 @@ const createRoom = async (req: AuthRequest, res: Response) => {
 };
 
 const getParticipatedRoom = async (req: AuthRequest, res: Response) => {
-  const limit = parseInt(req.query.limit as string, 10) || 10;
-  const offset = parseInt(req.query.offset as string, 10) || 0;
+  const limit = Number(req.query.limit);
+  const offset = Number(req.query.offset);
   const userId = Number(req.userId);
 
   try {
