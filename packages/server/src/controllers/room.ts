@@ -1,10 +1,11 @@
-import { Request, Response } from 'express';
+import { NextFunction, Request, Response } from 'express';
 import bcrypt from 'bcrypt';
 import { AuthRequest } from '@/type';
 import { RoomModel } from '@/models';
 import { CONFIG } from '@/config';
+import { CustomError } from '@/util';
 
-const getRoom = async (req: Request, res: Response) => {
+const getRoom = async (req: Request, res: Response, next: NextFunction) => {
   const roomId = Number(req.params.roomId);
 
   try {
@@ -12,11 +13,11 @@ const getRoom = async (req: Request, res: Response) => {
 
     res.json({ data: room, message: 'success' });
   } catch (error) {
-    res.status(500).json(`Internal Server Error: ${error}`);
+    next(new CustomError(500, `Internal Server Error: ${error}`));
   }
 };
 
-const getRoomList = async (req: Request, res: Response) => {
+const getRoomList = async (req: Request, res: Response, next: NextFunction) => {
   const limit = Number(req.query.limit);
   const offset = Number(req.query.offset);
 
@@ -25,11 +26,15 @@ const getRoomList = async (req: Request, res: Response) => {
 
     res.json({ data: roomList, message: 'success' });
   } catch (error) {
-    res.status(500).json(`Internal Server Error: ${error}`);
+    next(new CustomError(500, `Internal Server Error: ${error}`));
   }
 };
 
-const getSearchRoom = async (req: Request, res: Response) => {
+const getSearchRoom = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
   const keyword = String(req.query.keyword);
   const limit = Number(req.query.limit);
   const offset = Number(req.query.offset);
@@ -43,11 +48,15 @@ const getSearchRoom = async (req: Request, res: Response) => {
 
     res.json({ data: searchRoom, message: 'success' });
   } catch (error) {
-    res.status(500).json(`Internal Server Error: ${error}`);
+    next(new CustomError(500, `Internal Server Error: ${error}`));
   }
 };
 
-const createRoom = async (req: AuthRequest, res: Response) => {
+const createRoom = async (
+  req: AuthRequest,
+  res: Response,
+  next: NextFunction,
+) => {
   const { room_name, password, max_participants } = req.body;
   const userId = Number(req.userId);
 
@@ -67,11 +76,15 @@ const createRoom = async (req: AuthRequest, res: Response) => {
 
     res.json({ data: roomId, message: 'success' });
   } catch (error) {
-    res.status(500).json(`Internal Server Error: ${error}`);
+    next(new CustomError(500, `Internal Server Error: ${error}`));
   }
 };
 
-const getParticipatedRoom = async (req: AuthRequest, res: Response) => {
+const getParticipatedRoom = async (
+  req: AuthRequest,
+  res: Response,
+  next: NextFunction,
+) => {
   const limit = Number(req.query.limit);
   const offset = Number(req.query.offset);
   const userId = Number(req.userId);
@@ -85,11 +98,15 @@ const getParticipatedRoom = async (req: AuthRequest, res: Response) => {
 
     res.json({ data: participateRoomList, message: 'success' });
   } catch (error) {
-    res.status(500).json(`Internal Server Error: ${error}`);
+    next(new CustomError(500, `Internal Server Error: ${error}`));
   }
 };
 
-const deleteRoom = async (req: AuthRequest, res: Response) => {
+const deleteRoom = async (
+  req: AuthRequest,
+  res: Response,
+  next: NextFunction,
+) => {
   const roomId = Number(req.params.roomId);
   const userId = Number(req.userId);
 
@@ -108,11 +125,15 @@ const deleteRoom = async (req: AuthRequest, res: Response) => {
 
     res.json({ data: result, message: 'success' });
   } catch (error) {
-    res.status(500).json(`Internal Server Error: ${error}`);
+    next(new CustomError(500, `Internal Server Error: ${error}`));
   }
 };
 
-const patchRoom = async (req: AuthRequest, res: Response) => {
+const patchRoom = async (
+  req: AuthRequest,
+  res: Response,
+  next: NextFunction,
+) => {
   const roomId = Number(req.params.roomId);
   const { room_name, password, max_participants } = req.body;
 
@@ -131,7 +152,7 @@ const patchRoom = async (req: AuthRequest, res: Response) => {
 
     res.json({ data: result, message: 'success' });
   } catch (error) {
-    res.status(500).json(`Internal Server Error: ${error}`);
+    next(new CustomError(500, `Internal Server Error: ${error}`));
   }
 };
 

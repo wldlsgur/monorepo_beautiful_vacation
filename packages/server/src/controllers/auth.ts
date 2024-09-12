@@ -1,11 +1,16 @@
-import { Request, Response } from 'express';
+import { NextFunction, Request, Response } from 'express';
 import { AuthModel } from '@/models';
 import { UsersModel } from '@/models';
 import { CONFIG, redisClient } from '@/config';
-import { signAccessToken, signRefreshToken, verifyToken } from '@/util';
+import {
+  CustomError,
+  signAccessToken,
+  signRefreshToken,
+  verifyToken,
+} from '@/util';
 import { AuthRequest } from '@/type';
 
-const kakaoLogin = async (req: Request, res: Response) => {
+const kakaoLogin = async (req: Request, res: Response, next: NextFunction) => {
   const { code } = req.body;
 
   try {
@@ -55,11 +60,15 @@ const kakaoLogin = async (req: Request, res: Response) => {
 
     res.json({ data: user, message: 'success' });
   } catch (error) {
-    res.status(500).json(`Internal Server Error: ${error}`);
+    next(new CustomError(500, `Internal Server Error: ${error}`));
   }
 };
 
-const checkAuth = async (req: AuthRequest, res: Response) => {
+const checkAuth = async (
+  req: AuthRequest,
+  res: Response,
+  next: NextFunction,
+) => {
   const userId = Number(req.userId);
 
   try {
@@ -67,11 +76,11 @@ const checkAuth = async (req: AuthRequest, res: Response) => {
 
     res.json({ data: user, message: 'success' });
   } catch (error) {
-    res.status(500).json(`Internal Server Error: ${error}`);
+    next(new CustomError(500, `Internal Server Error: ${error}`));
   }
 };
 
-const logout = async (req: AuthRequest, res: Response) => {
+const logout = async (req: AuthRequest, res: Response, next: NextFunction) => {
   const { accessToken, refreshToken } = req.signedCookies;
   const userId = req.userId as string;
 
@@ -102,11 +111,15 @@ const logout = async (req: AuthRequest, res: Response) => {
 
     res.status(200).json({ data: null, message: 'success' });
   } catch (error) {
-    res.status(500).json(`Internal Server Error: ${error}`);
+    next(new CustomError(500, `Internal Server Error: ${error}`));
   }
 };
 
-const reissueAccessToken = async (req: Request, res: Response) => {
+const reissueAccessToken = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
   const { refreshToken } = req.signedCookies;
 
   try {
@@ -120,7 +133,7 @@ const reissueAccessToken = async (req: Request, res: Response) => {
         signed: true,
       });
 
-      res.status(401).json({ message: 'invalid refreshToken' });
+      next(new CustomError(401, 'invalid refreshToken'));
       return;
     }
 
@@ -134,7 +147,7 @@ const reissueAccessToken = async (req: Request, res: Response) => {
         signed: true,
       });
 
-      res.status(401).json({ message: 'invalid refreshToken' });
+      next(new CustomError(401, 'invalid refreshToken'));
       return;
     }
 
@@ -158,7 +171,7 @@ const reissueAccessToken = async (req: Request, res: Response) => {
 
     res.json({ data: null, message: 'success' });
   } catch (error) {
-    res.status(500).json(`Internal Server Error: ${error}`);
+    next(new CustomError(500, `Internal Server Error: ${error}`));
   }
 };
 
