@@ -1,5 +1,5 @@
 import { AuthRequest } from '@/type';
-import { verifyToken } from '@/util';
+import { CustomError, verifyToken } from '@/util';
 import { NextFunction, Response } from 'express';
 
 const authenticateToken = (
@@ -19,7 +19,7 @@ const authenticateToken = (
   }
 
   if (!accessToken) {
-    res.status(401).json({ message: 'accessToken is missing' });
+    next(new CustomError(401, `accessToken is missing`));
     return;
   }
 
@@ -27,14 +27,14 @@ const authenticateToken = (
     const { userId } = verifyToken({ token: accessToken });
 
     if (!userId) {
-      res.status(401).json({ message: 'invalid accessToken' });
+      next(new CustomError(401, `invalid accessToken`));
       return;
     }
 
     req.userId = userId;
     next();
-  } catch {
-    res.status(401).json({ message: 'invalid accessToken' });
+  } catch (error) {
+    next(new CustomError(401, `invalid accessToken`));
     return;
   }
 };
