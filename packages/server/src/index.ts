@@ -21,6 +21,7 @@ app.use(
 app.use('/api/v1/users', Router.UserRouter);
 app.use('/api/v1/rooms', Router.RoomRouter);
 app.use('/api/v1/auth', Router.AuthRouter);
+app.use('/api/v1/room/member', Router.RoomMemberRouter);
 
 app.use(Middleware.errorHandler);
 app.use(Middleware.notFoundHandler);

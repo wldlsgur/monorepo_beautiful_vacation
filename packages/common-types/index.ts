@@ -5,3 +5,4 @@ export * from './auth/request';
 export * from './user/model';
 export * from './user/response';
 export * from './user/request';
+export * from './roomMember/request';
