@@ -1,4 +1,4 @@
-export interface OutTheRoomRequest {
+export interface ExitRoomRequest {
   roomId: number;
   userId: number;
 }

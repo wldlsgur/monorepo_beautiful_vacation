@@ -1,15 +1,15 @@
-import { OutTheRoomRequest } from 'common-types';
+import { ExitRoomRequest } from 'common-types';
 import { Connection } from '@/config';
 
-const outTheRoom = async ({ roomId, userId }: OutTheRoomRequest) => {
-  const deleteQuery = `
+const exitRoom = async ({ roomId, userId }: ExitRoomRequest) => {
+  const query = `
       DELETE FROM chat_room_members
       WHERE room_id = ? AND user_id = ?
     `;
 
   try {
     const connection = await Connection();
-    const result = await connection.query(deleteQuery, [roomId, userId]);
+    const result = await connection.query(query, [roomId, userId]);
 
     return result;
   } catch (error) {
@@ -18,5 +18,5 @@ const outTheRoom = async ({ roomId, userId }: OutTheRoomRequest) => {
 };
 
 export default {
-  outTheRoom,
+  exitRoom,
 };

@@ -3,7 +3,7 @@ import { AuthRequest } from '@/type';
 import { RoomMemberModel } from '@/models';
 import { CustomError } from '@/util';
 
-const outTheRoom = async (
+const exitRoom = async (
   req: AuthRequest,
   res: Response,
   next: NextFunction,
@@ -12,7 +12,7 @@ const outTheRoom = async (
   const userId = Number(req.userId);
 
   try {
-    const result = await RoomMemberModel.outTheRoom({ roomId, userId });
+    const result = await RoomMemberModel.exitRoom({ roomId, userId });
 
     res.json({ data: result, message: 'success' });
   } catch (error) {
@@ -20,4 +20,4 @@ const outTheRoom = async (
   }
 };
 
-export default { outTheRoom };
+export default { exitRoom };
