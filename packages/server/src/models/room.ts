@@ -3,6 +3,7 @@ import {
   CreateRoomRequest,
   DeleteRoomRequest,
   EnterTheRoomRequest,
+  MadeRoomRequest,
   ParticipatedRoomRequest,
   PatchRoomRequest,
   RoomListRequest,
@@ -122,11 +123,31 @@ const getParticipatedRoom = async ({
   offset,
 }: ParticipatedRoomRequest) => {
   const query = `
-    SELECT * FROM chat_rooms
-    WHERE owner_id = ?
-    ORDER BY created_at DESC
+    SELECT cr.*
+    FROM chat_rooms cr
+    JOIN chat_room_members crm ON cr.room_id = crm.room_id
+    WHERE crm.user_id = ?
+    ORDER BY cr.created_at DESC
     LIMIT ? OFFSET ?
   `;
+
+  try {
+    const connection = await Connection();
+    const [rows] = await connection.query(query, [userId, limit, offset]);
+
+    return rows;
+  } catch (error) {
+    throw new Error(`DB Query Error: ${error}`);
+  }
+};
+
+const getMadeRoom = async ({ userId, limit, offset }: MadeRoomRequest) => {
+  const query = `
+  SELECT * FROM chat_rooms
+  WHERE owner_id = ?
+  ORDER BY created_at DESC
+  LIMIT ? OFFSET ?
+`;
 
   try {
     const connection = await Connection();
@@ -210,6 +231,7 @@ export default {
   getSearchRoom,
   createRoom,
   getParticipatedRoom,
+  getMadeRoom,
   enterTheRoom,
   deleteRoom,
   getRoomOwner,

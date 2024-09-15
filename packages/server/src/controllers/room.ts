@@ -102,6 +102,28 @@ const getParticipatedRoom = async (
   }
 };
 
+const getMadeRoom = async (
+  req: AuthRequest,
+  res: Response,
+  next: NextFunction,
+) => {
+  const limit = Number(req.query.limit);
+  const offset = Number(req.query.offset);
+  const userId = Number(req.userId);
+
+  try {
+    const madeRoomList = await RoomModel.getMadeRoom({
+      userId,
+      limit,
+      offset,
+    });
+
+    res.json({ data: madeRoomList, message: 'success' });
+  } catch (error) {
+    next(new CustomError(500, `Internal Server Error: ${error}`));
+  }
+};
+
 const deleteRoom = async (
   req: AuthRequest,
   res: Response,
@@ -162,6 +184,7 @@ export default {
   getSearchRoom,
   createRoom,
   getParticipatedRoom,
+  getMadeRoom,
   deleteRoom,
   patchRoom,
 };

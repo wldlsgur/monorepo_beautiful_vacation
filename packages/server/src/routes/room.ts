@@ -27,6 +27,13 @@ router.get(
   validateRequest,
   RoomController.getParticipatedRoom,
 );
+router.get(
+  '/made',
+  authenticateToken,
+  validateRoom.getRoomList,
+  validateRequest,
+  RoomController.getMadeRoom,
+);
 router.post(
   '/',
   authenticateToken,
