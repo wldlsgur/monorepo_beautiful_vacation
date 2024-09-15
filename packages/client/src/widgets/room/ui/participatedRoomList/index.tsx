@@ -1,5 +1,5 @@
 import { useInfiniteQuery } from '@tanstack/react-query';
-import { Room } from 'common-types';
+import { Room, User } from 'common-types';
 import { QUERY_OPTION } from '@/shared/constant';
 import { withAuth } from '@/shared/hoc';
 import { useInfinityList } from '@/shared/hook';
@@ -8,9 +8,13 @@ import { LoginForm } from '@/widgets/auth/ui';
 import ParticipatedRoomItem from '../participatedRoomItem';
 import * as S from './style';
 
+interface Props {
+  user: User;
+}
+
 const [offset, limit] = [0, 20];
 
-const ParticipateRoomList = () => {
+const ParticipateRoomList = ({ user }: Props) => {
   const { data, fetchNextPage, hasNextPage, isFetching } = useInfiniteQuery(
     QUERY_OPTION.PARTICIPATE_ROOM({ offset, limit }),
   );
@@ -32,6 +36,7 @@ const ParticipateRoomList = () => {
             <ParticipatedRoomItem
               key={room.room_id}
               roomData={room}
+              user={user}
               ref={isLast ? ref : null}
             />
           );
