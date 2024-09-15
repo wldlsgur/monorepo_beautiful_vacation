@@ -3,6 +3,7 @@ import { useTheme } from 'styled-components';
 import { QUERY_OPTION } from '@/shared/constant';
 import { ParticipatedRoomList, CreateRoomForm } from '@/widgets/room/ui';
 import { Profile } from '@/widgets/user/ui';
+import MadeRoomList from '../madeRoomList';
 import * as S from './style';
 
 const HomeTap = () => {
@@ -32,7 +33,7 @@ const HomeTap = () => {
       <S.HomeTapItem
         index={2}
         title='만든 방'
-        content={<ParticipatedRoomList />}
+        content={<MadeRoomList />}
       />
       <S.HomeTapItem
         index={3}

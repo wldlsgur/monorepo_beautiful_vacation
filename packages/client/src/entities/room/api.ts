@@ -1,5 +1,6 @@
 import {
   CreateRoomRequest,
+  MadeRoomRequest,
   ParticipatedRoomRequest,
   PatchRoomRequest,
   RoomListRequest,
@@ -39,6 +40,17 @@ export const getParticipatedRoom = async ({
   offset,
 }: ParticipatedRoomRequest) => {
   const response = await axiosInstance.get('/api/v1/rooms/participated', {
+    params: {
+      limit,
+      offset,
+    },
+  });
+
+  return response.data;
+};
+
+export const getMadeRoom = async ({ limit, offset }: MadeRoomRequest) => {
+  const response = await axiosInstance.get('/api/v1/rooms/made', {
     params: {
       limit,
       offset,

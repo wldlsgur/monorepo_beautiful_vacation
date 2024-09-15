@@ -27,7 +27,7 @@ const ParticipatedRoomItem = forwardRef(
           {`${current_participants} / ${max_participants}`}
         </S.Participants>
         <S.InteractionContainer>
-          {!isOwner && <ExitRoomButton />}
+          {!isOwner && <ExitRoomButton roomId={room_id} />}
           {isOwner && <DeleteRoomButton roomId={room_id} />}
           {isOwner && <EditModalButton roomId={room_id} />}
         </S.InteractionContainer>

@@ -20,6 +20,7 @@ export const roomItemStyle = css`
   display: flex;
   justify-content: space-between;
   align-items: center;
+  gap: 2rem;
   padding: 2rem 3rem;
   margin-bottom: 1.5rem;
   cursor: pointer;
@@ -50,9 +51,11 @@ export const roomItemStyle = css`
 `;
 
 export const roomTitleStyle = css`
+  flex-shrink: 0;
   color: ${({ theme }) => theme.colors.textPrimary};
 `;
 
 export const participantsStyle = css`
+  flex-shrink: 0;
   color: ${({ theme }) => theme.colors.secondary};
 `;
