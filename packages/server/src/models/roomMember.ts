@@ -1,5 +1,6 @@
-import { ExitRoomRequest } from 'common-types';
+import { EnterTheRoomRequest, ExitRoomRequest } from 'common-types';
 import { Connection } from '@/config';
+import { ResultSetHeader } from 'mysql2/promise';
 
 const exitRoom = async ({ roomId, userId }: ExitRoomRequest) => {
   const query = `
@@ -17,6 +18,28 @@ const exitRoom = async ({ roomId, userId }: ExitRoomRequest) => {
   }
 };
 
+const enterTheRoom = async ({ roomId, userId }: EnterTheRoomRequest) => {
+  const query = `
+    INSERT INTO chat_room_members (room_id, user_id)
+    VALUES (?, ?)
+  `;
+
+  try {
+    const connection = await Connection();
+    const [result] = await connection.query<ResultSetHeader>(query, [
+      roomId,
+      userId,
+    ]);
+
+    return {
+      memberId: result.insertId,
+    };
+  } catch (error) {
+    throw new Error(`DB Insert Error: ${error}`);
+  }
+};
+
 export default {
   exitRoom,
+  enterTheRoom,
 };

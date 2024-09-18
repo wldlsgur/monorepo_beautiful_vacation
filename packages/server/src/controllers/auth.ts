@@ -1,11 +1,13 @@
 import { NextFunction, Request, Response } from 'express';
-import { AuthModel } from '@/models';
+import bcrypt from 'bcrypt';
+import { AuthModel, RoomMemberModel, RoomModel } from '@/models';
 import { UsersModel } from '@/models';
 import { CONFIG, redisClient } from '@/config';
 import {
   CustomError,
   signAccessToken,
   signRefreshToken,
+  signRoomAccessToken,
   verifyToken,
 } from '@/util';
 import { AuthRequest } from '@/type';
@@ -175,9 +177,83 @@ const reissueAccessToken = async (
   }
 };
 
+const accessRoom = async (
+  req: AuthRequest,
+  res: Response,
+  next: NextFunction,
+) => {
+  const roomId = Number(req.params.roomId);
+  const { password } = req.body;
+  const userId = Number(req.userId);
+
+  try {
+    const room = await RoomModel.getRoom({ roomId });
+
+    if (!room) {
+      next(new CustomError(404, 'Room not found.'));
+      return;
+    }
+
+    const {
+      owner_id,
+      current_participants,
+      max_participants,
+      password: roomPassword,
+    } = room;
+
+    if (owner_id !== userId && current_participants >= max_participants) {
+      next(
+        new CustomError(
+          403,
+          'The room has reached the maximum number of participants.',
+        ),
+      );
+      return;
+    }
+
+    const isPasswordCorrect = await bcrypt.compare(password, roomPassword);
+
+    if (!isPasswordCorrect) {
+      next(new CustomError(403, 'Incorrect password.'));
+      return;
+    }
+
+    let memberId: number | null = null;
+
+    if (owner_id !== userId) {
+      ({ memberId } = await RoomMemberModel.enterTheRoom({ roomId, userId }));
+    }
+
+    const roomAccessToken = signRoomAccessToken({
+      userId,
+      roomId,
+      role: memberId ? 'participant' : 'owner',
+    });
+
+    await redisClient.set(
+      `user:${userId}, room:${roomId}`,
+      roomAccessToken,
+      'PX',
+      3600000,
+    );
+
+    res.cookie('roomAccessToken', roomAccessToken, {
+      httpOnly: true,
+      secure: CONFIG.NODE_ENV === 'production',
+      maxAge: 3600000,
+      signed: true,
+    });
+
+    res.json({ data: memberId, message: 'success' });
+  } catch (error) {
+    next(new CustomError(500, `Internal Server Error: ${error}`));
+  }
+};
+
 export default {
   kakaoLogin,
   checkAuth,
   logout,
   reissueAccessToken,
+  accessRoom,
 };

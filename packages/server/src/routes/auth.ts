@@ -17,5 +17,12 @@ router.post(
 router.post('/logout', authenticateToken, AuthController.logout);
 router.post('/reissue', AuthController.reissueAccessToken);
 router.get('/', authenticateToken, AuthController.checkAuth);
+router.post(
+  '/access/room/:roomId',
+  authenticateToken,
+  validateAuth.accessRoom,
+  validateRequest,
+  AuthController.accessRoom,
+);
 
 export default router;

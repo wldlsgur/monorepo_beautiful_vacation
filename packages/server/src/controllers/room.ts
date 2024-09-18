@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
 import bcrypt from 'bcrypt';
 import { AuthRequest } from '@/type';
-import { RoomModel } from '@/models';
+import { RoomMemberModel, RoomModel } from '@/models';
 import { CONFIG } from '@/config';
 import { CustomError } from '@/util';
 
@@ -72,7 +72,7 @@ const createRoom = async (
       owner_id: userId,
       max_participants,
     });
-    await RoomModel.enterTheRoom({ roomId, userId });
+    await RoomMemberModel.enterTheRoom({ roomId, userId });
 
     res.json({ data: roomId, message: 'success' });
   } catch (error) {

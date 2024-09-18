@@ -2,7 +2,6 @@ import { ResultSetHeader, RowDataPacket } from 'mysql2/promise';
 import {
   CreateRoomRequest,
   DeleteRoomRequest,
-  EnterTheRoomRequest,
   MadeRoomRequest,
   ParticipatedRoomRequest,
   PatchRoomRequest,
@@ -15,7 +14,7 @@ import { Connection } from '@/config';
 
 const getRoom = async ({ roomId }: RoomRequest) => {
   const query = `
-    SELECT room_id, room_name, owner_id, max_participants FROM chat_rooms
+    SELECT * FROM chat_rooms
     WHERE room_id = ?
   `;
 
@@ -90,27 +89,6 @@ const createRoom = async ({
 
     return {
       roomId: result.insertId,
-    };
-  } catch (error) {
-    throw new Error(`DB Insert Error: ${error}`);
-  }
-};
-
-const enterTheRoom = async ({ roomId, userId }: EnterTheRoomRequest) => {
-  const query = `
-    INSERT INTO chat_room_members (room_id, user_id)
-    VALUES (?, ?)
-  `;
-
-  try {
-    const connection = await Connection();
-    const [result] = await connection.query<ResultSetHeader>(query, [
-      roomId,
-      userId,
-    ]);
-
-    return {
-      memberId: result.insertId,
     };
   } catch (error) {
     throw new Error(`DB Insert Error: ${error}`);
@@ -232,7 +210,6 @@ export default {
   createRoom,
   getParticipatedRoom,
   getMadeRoom,
-  enterTheRoom,
   deleteRoom,
   getRoomOwner,
   getRoom,

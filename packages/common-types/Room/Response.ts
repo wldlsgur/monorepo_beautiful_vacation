@@ -6,6 +6,6 @@ export interface RoomListResponse {
 }
 
 export interface RoomResponse {
-  data: Pick<Room, 'room_id' | 'room_name' | 'max_participants'>;
+  data: Room;
   message: string;
 }

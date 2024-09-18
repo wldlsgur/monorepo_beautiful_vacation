@@ -5,3 +5,9 @@ export interface KakaoLoginRequest {
 export interface LogoutRequest {
   userId: number;
 }
+
+export interface AccessRoomRequest {
+  userId?: number;
+  roomId: number;
+  password: string;
+}
