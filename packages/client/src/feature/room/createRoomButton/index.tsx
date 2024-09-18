@@ -18,7 +18,7 @@ const CreateRoomButton = () => {
 
   return (
     <Button
-      type='submit'
+      type='button'
       onClick={handleSubmit(onValid)}
       disabled={isPending}
     >

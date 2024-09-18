@@ -1,5 +1,6 @@
 import { QueryClient } from '@tanstack/react-query';
 import {
+  AccessRoomRequest,
   CreateRoomRequest,
   KakaoLoginRequest,
   MadeRoomRequest,
@@ -11,6 +12,7 @@ import {
 } from 'common-types';
 import { NavigateFunction } from 'react-router-dom';
 import {
+  accessRoom,
   checkAuth,
   postKakaoLogin,
   postLogout,
@@ -137,9 +139,6 @@ export const MUTATE_OPTION = {
       const [offset, limit] = [0, 20];
 
       queryClient.invalidateQueries({
-        queryKey: QUERY_KEY.ROOM_LIST({ offset, limit }),
-      });
-      queryClient.invalidateQueries({
         queryKey: QUERY_KEY.PARTICIPATE_ROOM({
           offset,
           limit,
@@ -158,6 +157,9 @@ export const MUTATE_OPTION = {
           limit,
         }),
       });
+      queryClient.invalidateQueries({
+        queryKey: QUERY_KEY.ROOM_LIST({ offset, limit }),
+      });
     },
   }),
   DELETE_ROOM: ({ queryClient }: { queryClient: QueryClient }) => ({
@@ -165,9 +167,6 @@ export const MUTATE_OPTION = {
     onSuccess: () => {
       const [offset, limit] = [0, 20];
 
-      queryClient.invalidateQueries({
-        queryKey: QUERY_KEY.ROOM_LIST({ offset, limit }),
-      });
       queryClient.invalidateQueries({
         queryKey: QUERY_KEY.PARTICIPATE_ROOM({
           offset,
@@ -179,6 +178,9 @@ export const MUTATE_OPTION = {
           offset,
           limit,
         }),
+      });
+      queryClient.invalidateQueries({
+        queryKey: QUERY_KEY.ROOM_LIST({ offset, limit }),
       });
     },
   }),
@@ -233,6 +235,59 @@ export const MUTATE_OPTION = {
           limit,
         }),
       });
+    },
+  }),
+  ACCESS_ROOM: ({
+    queryClient,
+    setError,
+    navigate,
+  }: {
+    queryClient: QueryClient;
+    setError: any;
+    navigate: NavigateFunction;
+  }) => ({
+    mutationFn: ({ roomId, password }: AccessRoomRequest) =>
+      accessRoom(roomId, password),
+    onSuccess: (_: unknown, variables: AccessRoomRequest) => {
+      const [offset, limit] = [0, 20];
+      const { roomId } = variables;
+
+      queryClient.invalidateQueries({
+        queryKey: QUERY_KEY.PARTICIPATE_ROOM({
+          offset,
+          limit,
+        }),
+      });
+      queryClient.invalidateQueries({
+        queryKey: QUERY_KEY.MADE_ROOM({
+          offset,
+          limit,
+        }),
+      });
+
+      navigate(DOMAIN_URL.ROOM(roomId));
+    },
+    onError: (error: any) => {
+      const { status, response } = error;
+      const message = response?.data?.message || '';
+
+      if (status === 403) {
+        if (message === 'Incorrect password.') {
+          setError('password', {
+            type: 'manual',
+            message: '비밀번호가 일치하지 않습니다.',
+          });
+        }
+
+        if (
+          message === 'The room has reached the maximum number of participants.'
+        ) {
+          setError('participants', {
+            type: 'manual',
+            message: '인원이 모두 찼습니다.',
+          });
+        }
+      }
     },
   }),
 };

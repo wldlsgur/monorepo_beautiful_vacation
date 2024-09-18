@@ -24,3 +24,14 @@ export const reissueToken = async () => {
 
   return response.data;
 };
+
+export const accessRoom = async (roomId: number, password: string) => {
+  const response = await axiosInstance.post(
+    `/api/v1/auth/access/room/${roomId}`,
+    {
+      password,
+    },
+  );
+
+  return response.data;
+};

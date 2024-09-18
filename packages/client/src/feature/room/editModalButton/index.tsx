@@ -1,4 +1,5 @@
 import { Icon, useHover } from 'jiponent';
+import { useNavigate } from 'react-router-dom';
 import { useTheme } from 'styled-components';
 import { DOMAIN_URL } from '@/shared/constant';
 import * as S from './style';
@@ -9,19 +10,25 @@ interface Props {
 
 const EditModalButton = ({ roomId }: Props) => {
   const theme = useTheme();
-  const { ref, isHover } = useHover<HTMLAnchorElement>();
+  const navigate = useNavigate();
+  const { ref, isHover } = useHover<HTMLButtonElement>();
+
+  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.stopPropagation();
+    navigate(DOMAIN_URL.ROOM_EDIT(roomId));
+  };
 
   return (
-    <S.Linker
+    <S.Button
       ref={ref}
-      to={DOMAIN_URL.ROOM_EDIT(roomId)}
+      onClick={handleClick}
     >
       <Icon
         name='edit'
         fill={isHover ? theme.colors.warning : theme.colors.primaryReverse}
         size='1.5rem'
       />
-    </S.Linker>
+    </S.Button>
   );
 };
 

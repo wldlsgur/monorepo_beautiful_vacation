@@ -1,7 +1,6 @@
-import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
-export const Linker = styled(Link)`
+export const Button = styled.button`
   padding: 0;
   background: none;
   border: none;
