@@ -82,6 +82,24 @@ const checkAuth = async (
   }
 };
 
+const checkRoomAuth = async (
+  req: AuthRequest,
+  res: Response,
+  next: NextFunction,
+) => {
+  const userId = Number(req.userId);
+  const roomId = Number(req.roomId);
+  const role = req.role;
+
+  try {
+    const room = await RoomModel.getRoom({ roomId });
+
+    res.json({ data: { ...room, userId, role }, message: 'success' });
+  } catch (error) {
+    next(new CustomError(500, `Internal Server Error: ${error}`));
+  }
+};
+
 const logout = async (req: AuthRequest, res: Response, next: NextFunction) => {
   const { accessToken, refreshToken } = req.signedCookies;
   const userId = req.userId as string;
@@ -253,6 +271,7 @@ const accessRoom = async (
 export default {
   kakaoLogin,
   checkAuth,
+  checkRoomAuth,
   logout,
   reissueAccessToken,
   accessRoom,

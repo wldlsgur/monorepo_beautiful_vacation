@@ -1,6 +1,7 @@
 import express from 'express';
 import { AuthController } from '@/controllers';
 import {
+  authenticateRoomToken,
   authenticateToken,
   validateAuth,
   validateRequest,
@@ -23,6 +24,12 @@ router.post(
   validateAuth.accessRoom,
   validateRequest,
   AuthController.accessRoom,
+);
+router.get(
+  '/room',
+  authenticateToken,
+  authenticateRoomToken,
+  AuthController.checkRoomAuth,
 );
 
 export default router;
