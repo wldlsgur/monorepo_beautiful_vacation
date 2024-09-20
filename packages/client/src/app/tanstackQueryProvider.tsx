@@ -6,7 +6,6 @@ import {
   QueryClientProvider,
 } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
-import { AxiosError } from 'axios';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { DOMAIN_URL, QUERY_KEY, QUERY_OPTION } from '@/shared/constant';
 
@@ -21,15 +20,19 @@ const TanstackQueryProvider = ({ children }: PropsWithChildren) => {
       new QueryClient({
         queryCache: new QueryCache({
           onError: async (error, { queryKey }) => {
-            const { status } = error as unknown as AxiosError;
+            const { status, response } = error as any;
+            const { message } = response.data;
 
-            if (status === 401 && queryKey !== QUERY_KEY.REISSUE_TOKEN) {
+            if (
+              status === 401 &&
+              queryKey !== QUERY_KEY.REISSUE_TOKEN &&
+              (message === 'accessToken is missing' ||
+                message === 'invalid accessToken')
+            ) {
               try {
                 await queryClient.fetchQuery(QUERY_OPTION.REISSUE_TOKEN());
 
-                if (queryKey === QUERY_KEY.AUTH) {
-                  queryClient.invalidateQueries({ queryKey });
-                }
+                queryClient.invalidateQueries({ queryKey });
               } catch {
                 if (pathname !== DOMAIN_URL.HOME) {
                   navigate(DOMAIN_URL.HOME);
@@ -44,9 +47,14 @@ const TanstackQueryProvider = ({ children }: PropsWithChildren) => {
         }),
         mutationCache: new MutationCache({
           onError: async (error, variables, _, mutation) => {
-            const { status } = error as unknown as AxiosError;
+            const { status, response } = error as any;
+            const { message } = response.data;
 
-            if (status === 401) {
+            if (
+              status === 401 &&
+              (message === 'accessToken is missing' ||
+                message === 'invalid accessToken')
+            ) {
               try {
                 await queryClient.fetchQuery(QUERY_OPTION.REISSUE_TOKEN());
 
