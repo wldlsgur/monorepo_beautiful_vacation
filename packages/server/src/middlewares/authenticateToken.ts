@@ -1,5 +1,5 @@
 import { AuthRequest } from '@/type';
-import { CustomError, verifyToken } from '@/util';
+import { CustomError, verifyRoomToken, verifyToken } from '@/util';
 import { NextFunction, Response } from 'express';
 
 const authenticateToken = (
@@ -39,4 +39,36 @@ const authenticateToken = (
   }
 };
 
-export default authenticateToken;
+const authenticateRoomToken = (
+  req: AuthRequest,
+  res: Response,
+  next: NextFunction,
+) => {
+  const { roomAccessToken } = req.signedCookies;
+
+  if (!roomAccessToken) {
+    next(new CustomError(401, `roomAccessToken is missing`));
+    return;
+  }
+
+  try {
+    const { userId, roomId, role } = verifyRoomToken({
+      token: roomAccessToken,
+    });
+
+    if (!userId || !roomId || !role) {
+      next(new CustomError(401, `invalid roomAccessToken`));
+      return;
+    }
+
+    req.userId = userId;
+    req.roomId = roomId;
+    req.role = role;
+    next();
+  } catch (error) {
+    next(new CustomError(401, `invalid roomAccessToken`));
+    return;
+  }
+};
+
+export { authenticateToken, authenticateRoomToken };
