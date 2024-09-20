@@ -38,9 +38,7 @@ const TanstackQueryProvider = ({ children }: PropsWithChildren) => {
                   navigate(DOMAIN_URL.HOME);
                 }
 
-                if (queryKey !== QUERY_KEY.AUTH) {
-                  queryClient.invalidateQueries({ queryKey });
-                }
+                queryClient.setQueryData(QUERY_KEY.AUTH, { data: null });
               }
             }
           },
@@ -73,7 +71,7 @@ const TanstackQueryProvider = ({ children }: PropsWithChildren) => {
                   navigate(DOMAIN_URL.HOME);
                 }
 
-                queryClient.invalidateQueries({ queryKey: QUERY_KEY.AUTH });
+                queryClient.setQueryData(QUERY_KEY.AUTH, { data: null });
               }
             }
           },
