@@ -45,6 +45,7 @@ const authenticateRoomToken = (
   next: NextFunction,
 ) => {
   const { roomAccessToken } = req.signedCookies;
+  const { roomId } = req.params;
 
   if (!roomAccessToken) {
     next(new CustomError(401, `roomAccessToken is missing`));
@@ -52,12 +53,23 @@ const authenticateRoomToken = (
   }
 
   try {
-    const { userId, roomId, role } = verifyRoomToken({
+    const {
+      userId,
+      roomId: { tokenRoomId },
+      role,
+    } = verifyRoomToken({
       token: roomAccessToken,
     });
 
-    if (!userId || !roomId || !role) {
+    if (!userId || !tokenRoomId || !role) {
       next(new CustomError(401, `invalid roomAccessToken`));
+      return;
+    }
+
+    if (roomId !== tokenRoomId) {
+      next(
+        new CustomError(403, `You do not have permission to access this room`),
+      );
       return;
     }
 

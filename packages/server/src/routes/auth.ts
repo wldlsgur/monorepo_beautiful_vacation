@@ -26,7 +26,7 @@ router.post(
   AuthController.accessRoom,
 );
 router.get(
-  '/room',
+  '/room/:roomId',
   authenticateToken,
   authenticateRoomToken,
   AuthController.checkRoomAuth,
