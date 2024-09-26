@@ -35,3 +35,9 @@ export const accessRoom = async (roomId: number, password: string) => {
 
   return response.data;
 };
+
+export const checkRoomAuth = async (roomId: number) => {
+  const response = await axiosInstance.get(`/api/v1/auth/room/${roomId}`);
+
+  return response.data;
+};

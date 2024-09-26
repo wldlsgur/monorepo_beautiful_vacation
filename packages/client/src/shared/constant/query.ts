@@ -14,6 +14,7 @@ import { NavigateFunction } from 'react-router-dom';
 import {
   accessRoom,
   checkAuth,
+  checkRoomAuth,
   postKakaoLogin,
   postLogout,
   reissueToken,
@@ -64,6 +65,7 @@ export const QUERY_KEY = {
   ],
   AUTH: ['auth'],
   REISSUE_TOKEN: ['reissue', 'token'],
+  ROOM_AUTH: (roomId: number) => ['auth', 'room', roomId],
 };
 
 export const QUERY_OPTION = {
@@ -121,6 +123,12 @@ export const QUERY_OPTION = {
     queryFn: reissueToken,
     gcTime: 0,
     staleTime: 0,
+  }),
+  ROOM_AUTH: ({ roomId }: { roomId: number }) => ({
+    queryKey: QUERY_KEY.ROOM_AUTH(roomId),
+    queryFn: () => checkRoomAuth(roomId),
+    gcTime: Infinity,
+    staleTime: Infinity,
   }),
 };
 
