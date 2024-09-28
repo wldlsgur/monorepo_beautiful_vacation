@@ -21,6 +21,10 @@ const Router = () => {
         path='/auth/kakao'
         element={<Pages.AuthKakao />}
       />
+      <Route
+        path='/room/:id'
+        element={<Pages.Room />}
+      />
     </Routes>
   );
 };
