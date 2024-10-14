@@ -1,6 +1,7 @@
 {
   "name": "monorepo_beautiful_vacation",
   "version": "1.0.0",
+  "private": true,
   "main": "index.js",
   "repository": "https://github.com/wldlsgur/monorepo_beautiful_vacation.git",
   "author": "wldlsgur <dhgg321@naver.com>",
@@ -10,8 +11,10 @@
     "packages/*"
   ],
   "scripts": {
-    "client": "yarn workspace client dev",
-    "server": "yarn workspace server dev",
+    "client:dev": "yarn workspace client dev",
+    "client:build": "yarn workspace client build",
+    "server:dev": "yarn workspace server dev",
+    "server:build": "yarn workspace server build",
     "postinstall": "husky .husky",
     "prepack": "pinst --disable",
     "postpack": "pinst --enable"
