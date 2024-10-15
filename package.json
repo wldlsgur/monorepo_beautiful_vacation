@@ -17,7 +17,10 @@
     "server:build": "yarn workspace server build",
     "postinstall": "husky .husky",
     "prepack": "pinst --disable",
-    "postpack": "pinst --enable"
+    "postpack": "pinst --enable",
+    "docker:client:build": "docker build -f Dockerfile-Client -t beautiful-vacation-client .",
+    "docker:client:run": "docker run -d -p 80:80 --name client-container beautiful-vacation-client",
+    "docker:client:stop": "docker stop client-container && docker rm client-container"
   },
   "devDependencies": {
     "@types/express": "4.17.21",
