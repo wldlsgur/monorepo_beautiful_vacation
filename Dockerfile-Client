@@ -17,8 +17,6 @@ RUN corepack prepare yarn@4.4.0 --activate
 RUN yarn install
 
 COPY ./ ./
-COPY packages/common-types ./packages/common-types/
-COPY packages/client ./packages/client
 
 RUN VITE_API_BASE_URL=$VITE_API_BASE_URL \
     VITE_KAKAO_REST_API_KEY=$VITE_KAKAO_REST_API_KEY \

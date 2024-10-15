@@ -1,6 +1,21 @@
 version: '3.8'
 
 services:
+  server:
+    container_name: server
+    build:
+      context: .
+      dockerfile: Dockerfile-Server
+    ports:
+      - '5000:5000'
+    env_file:
+      - ./packages/server/.env
+    volumes:
+      - ./packages/server:/packages/server
+    depends_on:
+      - redis
+      - mysql
+
   client:
     container_name: client
     build:
