@@ -15,6 +15,7 @@
     "client:build": "yarn workspace client build",
     "server:dev": "yarn workspace server dev",
     "server:build": "yarn workspace server build",
+    "server:start": "yarn workspace server start",
     "postinstall": "husky .husky",
     "prepack": "pinst --disable",
     "postpack": "pinst --enable",
