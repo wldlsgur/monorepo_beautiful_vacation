@@ -1,22 +1,25 @@
-FROM node:alpine as build
+FROM node:alpine AS build
 
 WORKDIR /app
 
-COPY package.json ./
+COPY .yarn ./
+COPY .yarnrc.yml ./
 COPY yarn.lock ./
+COPY package.json ./
 COPY packages/common-types/package.json ./packages/common-types/
 COPY packages/server/package.json ./packages/server/
 
 RUN apk add --no-cache curl bash
 RUN corepack enable
-RUN corepack prepare yarn@4.4.0 --activate
+RUN yarn set version 4.5.0
+RUN yarn cache clean
 RUN yarn install
 
 COPY ./ ./
 
 RUN yarn server:build
 
-FROM node:alpine as production
+FROM node:alpine AS production
 
 WORKDIR /app
 
@@ -25,22 +28,8 @@ COPY yarn.lock ./
 COPY packages/common-types/package.json ./packages/common-types/
 COPY packages/server/package.json ./packages/server/
 
-ARG DB_HOST
-ARG DB_PORT
-ARG DB_USER
-ARG DB_PASSWORD
-ARG DB_NAME
-ARG REDIS_HOST
-ARG REDIS_PORT
-ARG COOKIE_SECRET
-ARG JWT_SECRET
-ARG KAKAO_REST_API_KEY
-ARG KAKAO_REDIRECT_URL
-ARG BCRYPT_SALT_ROUNDS
-
 RUN apk add --no-cache curl bash
-RUN corepack enable
-RUN corepack prepare yarn@4.4.0 --activate
+RUN corepack enable && corepack prepare yarn@4.4.0 --activate
 RUN yarn install
 
 COPY --from=build /app/packages/server/dist ./packages/server/dist
@@ -60,6 +49,5 @@ ENV DB_HOST=$DB_HOST \
 
 RUN npm install -g pm2
 
-EXPOSE 5000
 ENTRYPOINT ["yarn"]
 CMD ["server:start"]

@@ -1,5 +1,9 @@
 {
   "name": "common-types",
   "version": "1.0.0",
-  "packageManager": "yarn@4.4.0"
+  "private": true,
+  "devDependencies": {
+    "typescript": "5.5.4"
+  },
+  "types": "src/index.ts"
 }

@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   server:
     container_name: server
@@ -29,8 +27,6 @@ services:
       - '80:80'
     volumes:
       - ./packages/client:/usr/share/nginx/html
-    env_file:
-      - ./packages/client/.env
 
   mysql:
     container_name: mysql
