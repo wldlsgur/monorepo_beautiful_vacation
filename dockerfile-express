@@ -1,9 +1,7 @@
-FROM node:alpine AS build
+FROM node:20.16.0-alpine AS build
 
 WORKDIR /app
 
-COPY .yarn ./
-COPY .yarnrc.yml ./
 COPY yarn.lock ./
 COPY package.json ./
 COPY packages/common-types/package.json ./packages/common-types/
@@ -11,8 +9,7 @@ COPY packages/server/package.json ./packages/server/
 
 RUN apk add --no-cache curl bash
 RUN corepack enable
-RUN yarn set version 4.5.0
-RUN yarn cache clean
+RUN corepack prepare yarn@4.5.0 --activate
 RUN yarn install
 
 COPY ./ ./

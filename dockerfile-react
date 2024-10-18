@@ -1,4 +1,4 @@
-FROM node:alpine AS build
+FROM node:20.16.0-alpine AS build
 
 WORKDIR /app
 
@@ -6,8 +6,6 @@ ARG VITE_API_BASE_URL
 ARG VITE_KAKAO_REST_API_KEY
 ARG VITE_KAKAO_REDIRECT_URL
 
-COPY .yarn ./
-COPY .yarnrc.yml ./
 COPY yarn.lock ./
 COPY package.json ./
 COPY packages/common-types/package.json ./packages/common-types/
@@ -15,8 +13,7 @@ COPY packages/client/package.json ./packages/client/
 
 RUN apk add --no-cache curl bash
 RUN corepack enable
-RUN yarn set version 4.5.0
-RUN yarn cache clean
+RUN corepack prepare yarn@4.5.0 --activate
 RUN yarn install
 
 COPY ./ ./
