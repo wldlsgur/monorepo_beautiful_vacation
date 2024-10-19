@@ -1,8 +1,6 @@
 import { QueryClient } from '@tanstack/react-query';
 import {
-  AccessRoomRequest,
   CreateRoomRequest,
-  KakaoLoginRequest,
   MadeRoomRequest,
   ParticipatedRoomRequest,
   PatchRoomRequest,
@@ -11,14 +9,6 @@ import {
   SearchRoomRequest,
 } from 'common-types';
 import { NavigateFunction } from 'react-router-dom';
-import {
-  accessRoom,
-  checkAuth,
-  checkRoomAuth,
-  postKakaoLogin,
-  postLogout,
-  reissueToken,
-} from '@/entities/auth';
 import {
   deleteRoom,
   getMadeRoom,
@@ -112,35 +102,9 @@ export const QUERY_OPTION = {
     gcTime: Infinity,
     staleTime: Infinity,
   }),
-  AUTH: () => ({
-    queryKey: QUERY_KEY.AUTH,
-    queryFn: checkAuth,
-    gcTime: Infinity,
-    staleTime: Infinity,
-  }),
-  REISSUE_TOKEN: () => ({
-    queryKey: QUERY_KEY.REISSUE_TOKEN,
-    queryFn: reissueToken,
-    gcTime: 0,
-    staleTime: 0,
-  }),
-  ROOM_AUTH: ({ roomId }: { roomId: number }) => ({
-    queryKey: QUERY_KEY.ROOM_AUTH(roomId),
-    queryFn: () => checkRoomAuth(roomId),
-    gcTime: Infinity,
-    staleTime: Infinity,
-  }),
 };
 
 export const MUTATE_OPTION = {
-  KAKAO_LOGIN: ({ code }: KakaoLoginRequest) => ({
-    mutationFn: () => postKakaoLogin({ code }),
-  }),
-  LOGOUT: ({ queryClient }: { queryClient: QueryClient }) => ({
-    mutationFn: postLogout,
-    onSuccess: () =>
-      queryClient.invalidateQueries({ queryKey: QUERY_KEY.AUTH }),
-  }),
   CREATE_ROOM: ({ queryClient }: { queryClient: QueryClient }) => ({
     mutationFn: (data: CreateRoomRequest) => postRoom(data),
     onSuccess: (_: unknown, { room_name }: CreateRoomRequest) => {
@@ -243,59 +207,6 @@ export const MUTATE_OPTION = {
           limit,
         }),
       });
-    },
-  }),
-  ACCESS_ROOM: ({
-    queryClient,
-    setError,
-    navigate,
-  }: {
-    queryClient: QueryClient;
-    setError: any;
-    navigate: NavigateFunction;
-  }) => ({
-    mutationFn: ({ roomId, password }: AccessRoomRequest) =>
-      accessRoom(roomId, password),
-    onSuccess: (_: unknown, variables: AccessRoomRequest) => {
-      const [offset, limit] = [0, 20];
-      const { roomId } = variables;
-
-      queryClient.invalidateQueries({
-        queryKey: QUERY_KEY.PARTICIPATE_ROOM({
-          offset,
-          limit,
-        }),
-      });
-      queryClient.invalidateQueries({
-        queryKey: QUERY_KEY.MADE_ROOM({
-          offset,
-          limit,
-        }),
-      });
-
-      navigate(DOMAIN_URL.ROOM(roomId));
-    },
-    onError: (error: any) => {
-      const { status, response } = error;
-      const message = response?.data?.message || '';
-
-      if (status === 403) {
-        if (message === 'Incorrect password.') {
-          setError('password', {
-            type: 'manual',
-            message: '비밀번호가 일치하지 않습니다.',
-          });
-        }
-
-        if (
-          message === 'The room has reached the maximum number of participants.'
-        ) {
-          setError('participants', {
-            type: 'manual',
-            message: '인원이 모두 찼습니다.',
-          });
-        }
-      }
     },
   }),
 };

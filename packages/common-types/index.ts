@@ -6,3 +6,4 @@ export * from './user/model';
 export * from './user/response';
 export * from './user/request';
 export * from './roomMember/request';
+export * from './auth/response';

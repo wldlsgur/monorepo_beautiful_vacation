@@ -1,14 +1,14 @@
 import { useEffect } from 'react';
-import { useMutation } from '@tanstack/react-query';
 import Lottie from 'react-lottie-player';
 import { useNavigate } from 'react-router-dom';
-import { MUTATE_OPTION, DOMAIN_URL } from '@/shared/constant';
+import { usePostKakaoLogin } from '@/entities/auth';
+import { DOMAIN_URL } from '@/shared/constant';
 import { KAKAO_LOANING_LOTTIE } from '@/shared/lottie';
 import * as S from './style';
 
 const AuthKakao = () => {
   const code = new URL(window.location.href).searchParams.get('code') as string;
-  const { mutateAsync } = useMutation(MUTATE_OPTION.KAKAO_LOGIN({ code }));
+  const { mutateAsync } = usePostKakaoLogin({ code });
   const navigate = useNavigate();
 
   useEffect(() => {

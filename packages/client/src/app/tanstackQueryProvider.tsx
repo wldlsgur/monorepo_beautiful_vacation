@@ -7,9 +7,16 @@ import {
 } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { DOMAIN_URL, QUERY_KEY, QUERY_OPTION } from '@/shared/constant';
+import { reissueToken } from '@/entities/auth';
+import { DOMAIN_URL, QUERY_KEY } from '@/shared/constant';
 
 const isDevelopment = process.env.NODE_ENV === 'development';
+const reissueOptions = {
+  queryKey: QUERY_KEY.REISSUE_TOKEN,
+  queryFn: reissueToken,
+  gcTime: 0,
+  staleTime: 0,
+};
 
 const TanstackQueryProvider = ({ children }: PropsWithChildren) => {
   const navigate = useNavigate();
@@ -30,7 +37,7 @@ const TanstackQueryProvider = ({ children }: PropsWithChildren) => {
                 message === 'invalid accessToken')
             ) {
               try {
-                await queryClient.fetchQuery(QUERY_OPTION.REISSUE_TOKEN());
+                await queryClient.fetchQuery(reissueOptions);
 
                 queryClient.invalidateQueries({ queryKey });
               } catch {
@@ -54,7 +61,7 @@ const TanstackQueryProvider = ({ children }: PropsWithChildren) => {
                 message === 'invalid accessToken')
             ) {
               try {
-                await queryClient.fetchQuery(QUERY_OPTION.REISSUE_TOKEN());
+                await queryClient.fetchQuery(reissueOptions);
 
                 if (mutation?.options?.mutationFn && variables) {
                   const { mutationFn, onSuccess } = mutation.options;

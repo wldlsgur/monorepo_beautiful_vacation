@@ -1,7 +1,5 @@
-import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useFormContext } from 'react-hook-form';
-import { useNavigate } from 'react-router-dom';
-import { MUTATE_OPTION } from '@/shared/constant';
+import { useAccessRoom } from '@/entities/auth';
 import { Button } from '@/shared/ui';
 
 interface Props {
@@ -9,14 +7,10 @@ interface Props {
 }
 
 const AccessRoomButton = ({ roomId }: Props) => {
-  const navigate = useNavigate();
-  const queryClient = useQueryClient();
-  const { handleSubmit, setError } = useFormContext<{
+  const { mutate, isPending } = useAccessRoom();
+  const { handleSubmit } = useFormContext<{
     password: string;
   }>();
-  const { mutate, isPending } = useMutation(
-    MUTATE_OPTION.ACCESS_ROOM({ queryClient, setError, navigate }),
-  );
 
   const onValid = (data: { password: string }) => {
     mutate({ roomId, password: data.password });
