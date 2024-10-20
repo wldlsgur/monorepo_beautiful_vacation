@@ -1,9 +1,7 @@
 import { useEffect } from 'react';
-import { useSuspenseQuery } from '@tanstack/react-query';
-import { RoomResponse } from 'common-types';
 import { FormProvider, useForm } from 'react-hook-form';
+import { useGetRoom } from '@/entities/room';
 import { AccessRoomButton } from '@/feature/auth';
-import { QUERY_OPTION } from '@/shared/constant';
 import { withAuth } from '@/shared/hoc';
 import { LoginForm } from '@/widgets/auth/ui';
 import { ACCESS_ROOM_FORM } from '../constant';
@@ -14,9 +12,7 @@ interface Props {
 }
 
 const RoomAccessForm = ({ roomId }: Props) => {
-  const { data } = useSuspenseQuery<RoomResponse>(
-    QUERY_OPTION.ROOM({ roomId }),
-  );
+  const { data } = useGetRoom({ roomId });
   const methods = useForm({
     defaultValues: ACCESS_ROOM_FORM.DEFAULT_VALUES,
   });

@@ -1,6 +1,5 @@
-import { useInfiniteQuery } from '@tanstack/react-query';
 import { Room, User } from 'common-types';
-import { QUERY_OPTION } from '@/shared/constant';
+import { useGetMadeRoomList } from '@/entities/room';
 import { withAuth } from '@/shared/hoc';
 import { useInfinityList } from '@/shared/hook';
 import { RoomListEmpty, RoomListSkeleton } from '@/shared/ui';
@@ -15,9 +14,10 @@ interface Props {
 const [offset, limit] = [0, 20];
 
 const MadeRoomList = ({ user }: Props) => {
-  const { data, fetchNextPage, hasNextPage, isFetching } = useInfiniteQuery(
-    QUERY_OPTION.MADE_ROOM({ offset, limit }),
-  );
+  const { data, fetchNextPage, hasNextPage, isFetching } = useGetMadeRoomList({
+    offset,
+    limit,
+  });
   const ref = useInfinityList({ hasNextPage, isFetching, fetchNextPage });
 
   if (!data || data.pages[0].data.length === 0) {

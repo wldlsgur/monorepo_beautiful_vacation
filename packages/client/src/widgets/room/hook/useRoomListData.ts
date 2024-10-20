@@ -1,5 +1,4 @@
-import { useInfiniteQuery } from '@tanstack/react-query';
-import { QUERY_OPTION } from '@/shared/constant';
+import { useGetRoomList, useGetSearchRoomList } from '@/entities/room';
 
 interface Props {
   keyword: string;
@@ -13,14 +12,13 @@ const useRoomListData = ({ keyword }: Props) => {
     fetchNextPage: fetchNextRoomListPage,
     hasNextPage: hasNextRoomListPage,
     isFetching: isFetchingRoomList,
-  } = useInfiniteQuery(QUERY_OPTION.ROOM_LIST({ offset, limit }));
-
+  } = useGetRoomList({ offset, limit });
   const {
     data: searchRoomData,
     fetchNextPage: fetchNextSearchPage,
     hasNextPage: hasNextSearchPage,
     isFetching: isFetchingSearch,
-  } = useInfiniteQuery(QUERY_OPTION.SEARCH_ROOM({ keyword, offset, limit }));
+  } = useGetSearchRoomList({ keyword, offset, limit });
 
   const data = keyword ? searchRoomData : roomListData;
   const fetchNextPage = keyword ? fetchNextSearchPage : fetchNextRoomListPage;

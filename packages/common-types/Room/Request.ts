@@ -1,5 +1,17 @@
 import { Room } from './model';
 
+export interface ParticipatedRoomRequest {
+  userId?: number;
+  limit: number;
+  offset: number;
+}
+
+export interface MadeRoomRequest {
+  userId?: number;
+  limit: number;
+  offset: number;
+}
+
 export interface RoomListRequest {
   limit: number;
   offset: number;

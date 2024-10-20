@@ -1,7 +1,6 @@
-import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { Icon, useHover } from 'jiponent';
 import { useTheme } from 'styled-components';
-import { MUTATE_OPTION } from '@/shared/constant';
+import { useDeleteRoom } from '@/entities/room';
 import * as S from './style';
 
 interface Props {
@@ -10,11 +9,8 @@ interface Props {
 
 const DeleteRoomButton = ({ roomId }: Props) => {
   const theme = useTheme();
-  const queryClient = useQueryClient();
   const { ref, isHover } = useHover<HTMLButtonElement>();
-  const { mutate, isPending } = useMutation(
-    MUTATE_OPTION.DELETE_ROOM({ queryClient }),
-  );
+  const { mutate, isPending } = useDeleteRoom();
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.stopPropagation();

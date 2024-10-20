@@ -1,15 +1,11 @@
-import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { CreateRoomRequest } from 'common-types';
 import { useFormContext } from 'react-hook-form';
-import { MUTATE_OPTION } from '@/shared/constant';
+import { usePostRoom } from '@/entities/room';
 import { Button } from '@/shared/ui';
 
 const CreateRoomButton = () => {
-  const queryClient = useQueryClient();
   const { handleSubmit, reset } = useFormContext<CreateRoomRequest>();
-  const { mutate, isPending } = useMutation(
-    MUTATE_OPTION.CREATE_ROOM({ queryClient }),
-  );
+  const { mutate, isPending } = usePostRoom();
 
   const onValid = (data: CreateRoomRequest) => {
     mutate(data);

@@ -1,8 +1,6 @@
-import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { PatchRoomRequest } from 'common-types';
 import { useFormContext } from 'react-hook-form';
-import { useNavigate } from 'react-router-dom';
-import { MUTATE_OPTION } from '@/shared/constant';
+import { usePatchRoom } from '@/entities/room';
 import { Button } from '@/shared/ui';
 
 interface Props {
@@ -10,12 +8,8 @@ interface Props {
 }
 
 const EditRoomButton = ({ roomId }: Props) => {
-  const navigate = useNavigate();
-  const queryClient = useQueryClient();
+  const { mutate, isPending } = usePatchRoom();
   const { handleSubmit } = useFormContext<Omit<PatchRoomRequest, 'room_id'>>();
-  const { mutate, isPending } = useMutation(
-    MUTATE_OPTION.PATCH_ROOM({ queryClient, navigate }),
-  );
 
   const onValid = (data: Omit<PatchRoomRequest, 'room_id'>) => {
     mutate({ room_id: roomId, ...data });
