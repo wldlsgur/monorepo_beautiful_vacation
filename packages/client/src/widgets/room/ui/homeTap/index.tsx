@@ -1,6 +1,5 @@
-import { useQuery } from '@tanstack/react-query';
 import { useTheme } from 'styled-components';
-import { QUERY_OPTION } from '@/shared/constant';
+import { useCheckAuth } from '@/entities/auth';
 import { ParticipatedRoomList, CreateRoomForm } from '@/widgets/room/ui';
 import { Profile } from '@/widgets/user/ui';
 import MadeRoomList from '../madeRoomList';
@@ -8,7 +7,7 @@ import * as S from './style';
 
 const HomeTap = () => {
   const theme = useTheme();
-  const { data, isError } = useQuery(QUERY_OPTION.AUTH());
+  const { data, isError } = useCheckAuth();
   const isLogin = data?.data && !isError;
 
   return (
