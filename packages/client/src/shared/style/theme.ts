@@ -14,6 +14,7 @@ const theme: DefaultTheme = {
     error: '#D0021B',
 
     background: '#F7F8FA',
+    backgroundLight: '#F0F4F8',
     surface: '#FFFFFF',
     border: '#E1E4E8',
 
