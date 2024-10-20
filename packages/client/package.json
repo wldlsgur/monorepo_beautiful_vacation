@@ -12,6 +12,7 @@
   "dependencies": {
     "@tanstack/react-query": "5.52.2",
     "axios": "1.7.5",
+    "dayjs": "^1.11.13",
     "framer-motion": "11.3.30",
     "jiponent": "1.10.3",
     "lodash": "4.17.21",
