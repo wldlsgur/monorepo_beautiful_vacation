@@ -1,25 +1,27 @@
-import { useState } from 'react';
-import dayjs from 'dayjs';
-import { CurrentDateTitle, DatePicker } from '@/widgets/calendar/ui';
+import { useMemo, useState } from 'react';
+import dayjs, { Dayjs } from 'dayjs';
+import { CurrentDateTitle, DatePicker, DayList } from '@/widgets/calendar/ui';
+import { getGroupedDays } from '../../util';
 import * as S from './style';
 
-const formatType = 'YYYY년 MM월 DD일';
-
 const Calendar = () => {
-  const [date, setDate] = useState(() => dayjs().format(formatType));
-
+  const [date, setDate] = useState<Dayjs>(dayjs());
+  const groupedDays = useMemo(() => getGroupedDays(date), [date]);
+  // eslint-disable-next-line no-console
+  console.log(groupedDays);
   return (
-    <S.TableContainer>
-      <S.TableHeader>
+    <S.CalendarContainer>
+      <S.DateContainer>
         <CurrentDateTitle date={date} />
-        <DatePicker
-          date={date}
-          onChange={(newDate: string) =>
-            setDate(dayjs(newDate).format(formatType))
-          }
-        />
-      </S.TableHeader>
-    </S.TableContainer>
+        <DatePicker onChange={(newDate: string) => setDate(dayjs(newDate))} />
+      </S.DateContainer>
+      <S.TableContainer>
+        <S.TableHeader>
+          <DayList />
+        </S.TableHeader>
+        <S.TableBody />
+      </S.TableContainer>
+    </S.CalendarContainer>
   );
 };
 

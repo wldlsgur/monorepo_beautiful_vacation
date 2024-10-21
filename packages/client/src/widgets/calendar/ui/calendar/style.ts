@@ -1,12 +1,12 @@
 import styled from 'styled-components';
 
-export const TableContainer = styled.table`
+export const CalendarContainer = styled.section`
   display: flex;
   flex-direction: column;
   flex-grow: 1;
 `;
 
-export const TableHeader = styled.thead`
+export const DateContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-around;
@@ -14,3 +14,12 @@ export const TableHeader = styled.thead`
   background: ${({ theme }) => theme.colors.backgroundLight}; /* 배경색 설정 */
   border-bottom: 1px solid rgba(0, 0, 0, 0.1);
 `;
+
+export const TableContainer = styled.table`
+  flex-grow: 1;
+  overflow-y: auto;
+`;
+
+export const TableHeader = styled.thead``;
+
+export const TableBody = styled.tbody``;
