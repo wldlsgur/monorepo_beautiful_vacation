@@ -39,4 +39,5 @@ export const QUERY_KEY = {
   AUTH: ['auth'],
   REISSUE_TOKEN: ['reissue', 'token'],
   ROOM_AUTH: (roomId: number) => ['auth', 'room', roomId],
+  HOLIDAYS: (year: number) => ['holidays', year],
 };
