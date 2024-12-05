@@ -5,24 +5,32 @@ import { DateItem } from '..';
 import * as S from './style';
 
 interface Props {
+  currentYear: number;
+  currentMonth: number;
   dateList: DayInfo[][];
 }
 
-const DateList = ({ dateList }: Props) => {
-  useFetchHolidays(2024);
+const DateList = ({ dateList, currentYear, currentMonth }: Props) => {
+  const { data: holidays } = useFetchHolidays(currentYear, currentMonth);
 
   return (
     <>
       {dateList.map((row) => (
         <S.DateRow key={uuidv4()}>
-          {row.map(({ dayOfMonth, weekday }) => (
-            <DateItem.Container key={uuidv4()}>
-              <DateItem.Date
-                dayOfMonth={dayOfMonth}
-                weekday={weekday}
-              />
-            </DateItem.Container>
-          ))}
+          {row.map(({ dayOfMonth, weekday }) => {
+            const holiday = holidays?.find(({ day }) => day === dayOfMonth);
+
+            return (
+              <DateItem.Container key={uuidv4()}>
+                <DateItem.Header
+                  isHoliday={!!holiday}
+                  dateName={holiday?.dateName}
+                  dayOfMonth={dayOfMonth}
+                  weekday={weekday}
+                />
+              </DateItem.Container>
+            );
+          })}
         </S.DateRow>
       ))}
     </>

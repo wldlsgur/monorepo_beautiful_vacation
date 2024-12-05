@@ -24,7 +24,11 @@ const Calendar = () => {
           <DayList />
         </S.TableHeader>
         <S.TableBody>
-          <DateList dateList={groupedDays} />
+          <DateList
+            dateList={groupedDays}
+            currentYear={date.year()}
+            currentMonth={date.month() + 1}
+          />
         </S.TableBody>
       </S.TableContainer>
     </S.CalendarContainer>

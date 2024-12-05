@@ -5,17 +5,31 @@ const DateItemContainer = ({ children }: PropsWithChildren) => {
   return <S.DateItem>{children}</S.DateItem>;
 };
 
-const DateItemDate = ({
-  dayOfMonth,
-  weekday,
-}: {
+interface DateItemDateProps {
   dayOfMonth: number;
   weekday: number;
-}) => {
-  return <S.DateOfMonth $weekday={weekday}>{dayOfMonth}</S.DateOfMonth>;
+  isHoliday: boolean;
+  dateName?: string;
+}
+
+const DateItemHeader = ({
+  dayOfMonth,
+  weekday,
+  isHoliday,
+  dateName,
+}: DateItemDateProps) => {
+  return (
+    <S.DateHeader
+      $isHoliday={isHoliday}
+      $weekday={weekday}
+    >
+      <S.DateText>{dayOfMonth}</S.DateText>
+      <S.DateText>{dateName}</S.DateText>
+    </S.DateHeader>
+  );
 };
 
 export default {
   Container: DateItemContainer,
-  Date: DateItemDate,
+  Header: DateItemHeader,
 };
