@@ -17,8 +17,10 @@ const DateList = ({ dateList, currentYear, currentMonth }: Props) => {
     <>
       {dateList.map((row) => (
         <S.DateRow key={uuidv4()}>
-          {row.map(({ dayOfMonth, weekday }) => {
-            const holiday = holidays?.find(({ day }) => day === dayOfMonth);
+          {row.map(({ date, dayOfMonth, weekday }) => {
+            const holiday = holidays?.find(
+              ({ locdate }) => String(locdate) === date.replace(/-/g, ''),
+            );
 
             return (
               <DateItem.Container key={uuidv4()}>
